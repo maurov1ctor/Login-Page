@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="loginStyle.css">
+    <link rel="icon" href="./img/logo.jpg">
+    <title>Página Inicial - Alerta de Mensalidade</title>
+</head>
+<body>
+    <main id="container">
+        <img id="logo" src="./Imagens/logo.jpg" alt="logo">
+        <form>
+             <p>Faça seu login</p>
+             <label for="matricula">Matrícula<input type="text" id="matricula"/></label>
+             <label for="senha">Senha<input type="password" id="senha"/></label>
+             <button type="button" onclick="sendData()">Continuar</button>
+             <a href="https://www.uninassau.edu.br/conteudo/formas-de-ingresso" target="_blank">Não sou aluno</a>
+        </form>
+    </main>
+    <div id="copyright">
+        Desenvolvido por Mauro Victor e Pedro Barros
+    </div>
+
+    <script>
+        function sendData(){
+            var matricula = document.getElementById("matricula").value;
+
+            var senha = document.getElementById("senha").value;
+
+
+            if (matricula == "admin" && senha == "1234"){
+                window.location.href = "home.html";
+            } else {
+                alert("Usuário e/ou senha inválidos!");
+            }
+        }
+    </script>
+</body>
+</html>
