@@ -46,12 +46,12 @@ def main(cast_dir):
         f = fs = ImageFont.load_default()
     d_s, d_e = draw(D_S), draw(D_E)
     d_s.save(os.path.join(HERE, "hero_sil_D_S.png")); d_e.save(os.path.join(HERE, "hero_sil_D_E.png"))
-    c_s, c_e = (Image.open(os.path.join(HERE, "history", "hero_sil_D_%s_v2.png" % v)) for v in "SE")
+    c_s, c_e = (Image.open(os.path.join(HERE, "history", "hero_sil_D_%s_v3.png" % v)) for v in "SE")
     S = 5
     W = 4 * (64 * S + 12) + 60
     b = Image.new("RGBA", (W, 64 * S + 330), (236, 230, 216, 255)); dr = ImageDraw.Draw(b)
-    dr.text((20, 8), "Antes: D v2", fill=(90, 80, 110, 255), font=f)
-    dr.text((20 + 2 * (64 * S + 12) + 30, 8), "Agora: D v3 (sem ponta do cachecol na frente, fio caído para o lado, ombros e mangas)", fill=(30, 24, 40, 255), font=f)
+    dr.text((20, 8), "Antes: D v3", fill=(90, 80, 110, 255), font=f)
+    dr.text((20 + 2 * (64 * S + 12) + 30, 8), "Agora: D v4 (gola alta, fio em gancho, braço do perfil, bolsa, barra)", fill=(30, 24, 40, 255), font=f)
     for i, im in enumerate([c_s, c_e, d_s, d_e]):
         x = 20 + i * (64 * S + 12) + (30 if i > 1 else 0)
         b.alpha_composite(im.resize((64 * S, 64 * S), Image.NEAREST), (x, 32))
