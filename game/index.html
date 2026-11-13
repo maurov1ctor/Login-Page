@@ -41,6 +41,25 @@
   #more { position:absolute; right:12px; bottom:6px; font-style:normal; font-size:12px; color:var(--gold); animation:bob .6s ease-in-out infinite alternate; }
   @keyframes bob { to { transform:translateY(3px); } }
 
+  #toast { position:absolute; left:50%; top:12px; transform:translate(-50%,-8px); padding:6px 12px; border-radius:8px; font-size:13px; white-space:nowrap;
+           background:#1e1730ee; border:1px solid var(--gold); color:var(--cream); opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; }
+  #toast.on { opacity:1; transform:translate(-50%,0); }
+  #fish { position:absolute; left:50%; top:18%; transform:translateX(-50%); width:min(82%,320px); display:none; flex-direction:column; align-items:center; gap:8px;
+          padding:12px 14px; background:linear-gradient(180deg,#2a2042f2,#1a1328f2); border:2px solid #4a3a6e; border-radius:12px; box-shadow:0 0 0 2px var(--edge), 0 8px 20px rgba(0,0,0,.5); }
+  #fish b { font-size:14px; color:var(--gold); letter-spacing:.08em; text-transform:uppercase; }
+  .fbar { position:relative; width:100%; height:20px; border-radius:10px; background:#140f1d; box-shadow:inset 0 2px 4px rgba(0,0,0,.6), 0 0 0 2px #3a2d55; overflow:hidden; }
+  #fzone { position:absolute; top:0; bottom:0; background:linear-gradient(180deg,#9ae0a0,#3f8c4a); }
+  #fzone.rare { background:linear-gradient(180deg,#ffe08a,#c98a2c); }
+  #fcur { position:absolute; top:0; bottom:0; width:4px; margin-left:-2px; background:var(--cream); box-shadow:0 0 6px #fff; }
+  #fish span { font-size:12px; color:var(--muted); }
+  #catch { position:absolute; left:10px; right:10px; bottom:10px; display:none; gap:14px; align-items:center; padding:14px;
+           background:linear-gradient(180deg,#2a2042f2,#1a1328f2); border:2px solid #4a3a6e; border-radius:12px; box-shadow:0 0 0 2px var(--edge), 0 8px 20px rgba(0,0,0,.5); }
+  #catch.rare { border-color:var(--gold); box-shadow:0 0 0 2px var(--edge), 0 0 24px rgba(242,196,90,.45); }
+  #ccv { flex:none; width:96px; image-rendering:pixelated; padding:8px; border-radius:10px; background:radial-gradient(circle,#3a2d55,#18122a); }
+  #catch div { display:flex; flex-direction:column; gap:4px; min-width:0; }
+  #cname { font-size:17px; color:var(--gold); }
+  #cdesc { font-size:14px; line-height:1.4; }
+  #catch small { font-size:11px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
   #err { position:absolute; inset:0; display:none; align-items:center; justify-content:center; padding:24px; text-align:center; font-size:15px; }
 
   /* console */
@@ -78,6 +97,9 @@
     <div id="banner"><b>Vila Âmbar</b><span>Praça do Sol Poente</span></div>
     <div id="flash"></div>
     <div id="msg"><div id="name"></div><span id="txt"></span><i id="more">▼</i></div>
+    <div id="toast"></div>
+    <div id="fish"><b>Fisgou!</b><div class="fbar"><div id="fzone"></div><div id="fcur"></div></div><span>Aperte A com o cursor na faixa</span></div>
+    <div id="catch"><canvas id="ccv" width="32" height="32"></canvas><div><b id="cname"></b><span id="cdesc"></span><small>A para continuar</small></div></div>
     <div id="err">Seu navegador não conseguiu iniciar o WebGL. Tente abrir no Chrome ou Safari atualizados.</div>
   </div>
   <div id="pad">

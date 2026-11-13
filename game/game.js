@@ -266,6 +266,102 @@
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
   }
 
+  // ================= CRIATURAS ORIGINAIS DO MUNDO =================
+  const CR = {
+    fire: ['#4a1418', '#9a3220', '#dc5e2a', '#f6a04a'], belly: ['#c98a5a', '#f6d6a0', '#fff0d0'],
+    leaf: ['#1e3a24', '#2f6a34', '#5aa046', '#9ad468'], water: ['#1a3a6a', '#2f6ab0', '#5aa8e0', '#b8ecff'],
+    rock: ['#2e2a38', '#55506a', '#857f96', '#b8b4c4'],
+  };
+  function eyes(p, x1, x2, y) { [x1, x2].forEach(x => { if (x == null) return; p.rect(x, y, 2, 3, P.out); p.set(x, y, '#ffffff'); }); }
+  function drawBrasito(f) { // fogo: filhote de salamandra com rabo em chamas
+    const p = new Pix(28, 24), o = f ? 1 : 0;
+    p.ball(6, 15, 3.5, 2.6, CR.fire);
+    p.ell(3.5, 9 - o, 2.6, 4, P.red[3]); p.ell(4, 10 - o, 1.8, 2.6, P.amber[3]); p.ell(4, 11 - o, 1, 1.4, P.amber[4]);
+    p.ball(10, 21, 2.4, 1.8, CR.fire); p.ball(18, 21, 2.4, 1.8, CR.fire);
+    p.ball(14, 16, 8, 5.5, CR.fire); p.ell(15.5, 18, 4.5, 2.4, CR.belly[1]);
+    p.ball(18.5, 9.5, 7, 6, CR.fire); p.ell(19.5, 12.5, 4, 2, CR.belly[1]);
+    p.ell(15, 3.5, 1.2, 2.2, CR.belly[2]); p.ell(20, 3, 1.2, 2.2, CR.belly[2]);
+    eyes(p, 17, 22, 8); p.set(24, 11, P.pink[2]); p.set(16, 11, P.pink[2]); p.rect(20, 12, 2, 1, CR.fire[0]);
+    return p.outline();
+  }
+  function drawFolhim(f) { // planta: feijãozinho com broto de duas folhas
+    const p = new Pix(26, 28), s = f ? 1 : -1;
+    p.rect(12, 5, 2, 7, CR.leaf[1]);
+    p.ell(8 + s * 0.5, 5, 4.5, 2.2, CR.leaf[2]); p.ell(8 + s * 0.5, 4.5, 3, 1.2, CR.leaf[3]); p.line(5, 5, 11, 5, CR.leaf[1]);
+    p.ell(18 - s * 0.5, 4, 4.5, 2.2, CR.leaf[2]); p.ell(18 - s * 0.5, 3.5, 3, 1.2, CR.leaf[3]); p.line(14, 4, 21, 4, CR.leaf[1]);
+    p.ball(9, 25, 2.6, 1.8, CR.leaf); p.ball(17, 25, 2.6, 1.8, CR.leaf);
+    p.ball(13, 17, 9, 7.5, CR.leaf); p.ell(13, 20.5, 5, 2.6, '#c8e89a');
+    eyes(p, 9, 15, 14); p.rect(7, 18, 2, 1, P.pink[2]); p.rect(18, 18, 2, 1, P.pink[2]); p.rect(12, 19, 2, 1, CR.leaf[0]);
+    return p.outline();
+  }
+  function drawGotinho(f) { // água: gota viva com barbatanas
+    const p = new Pix(24, 26), o = f ? 1 : 0;
+    p.ell(4, 16 - o, 2.4, 3.2, CR.water[3]); p.ell(20, 15 + o, 2.4, 3.2, CR.water[3]);
+    for (let y = 3; y < 12; y++) { const w = (y - 3) * 0.8; p.rect(Math.round(12 - w), y, Math.round(w * 2) + 1, 1, CR.water[2]); }
+    p.ball(12, 17, 8, 7.5, CR.water); p.set(11, 4, CR.water[3]); p.set(11, 5, CR.water[3]);
+    p.rect(6, 12, 2, 2, '#ffffff'); p.set(6, 15, CR.water[3]);
+    eyes(p, 8, 14, 15); p.rect(11, 20, 3, 1, CR.water[0]);
+    return p.outline('#10203a');
+  }
+  function drawPedrisco(f) { // pedra: besouro de rocha com musgo nas costas
+    const p = new Pix(30, 20), o = f ? 1 : 0;
+    [6, 12, 18].forEach((x, i) => p.line(x, 13, x - 2, 18 - ((i + o) % 2), CR.rock[0]));
+    p.ball(24, 12.5, 4.5, 4, CR.rock.slice(0, 3)); p.rect(25, 11, 2, 1, P.out);
+    p.ball(13, 10 - o * 0.4, 11, 6.5, CR.rock); p.line(13, 4, 13, 16, CR.rock[0]);
+    for (let x = 5; x < 22; x++) if (hash(x, 3) < 0.6) p.set(x, 4 + ((hash(x, 7) * 2) | 0), CR.leaf[2 + (x % 2)]);
+    return p.outline();
+  }
+  function drawVillager(c, view, f) {
+    const p = new Pix(28, 42), lf = f === 1 ? 1 : 0, rf = f === 2 ? 1 : 0, side = view === 'side', back = view === 'back';
+    if (side) { const st = [0, 2, -2][f]; p.rect(11 - st, 29, 4, 10, c.pants[0]); p.ball(13 - st, 40, 3, 1.8, P.wood); p.rect(14 + st, 29, 4, 10, c.pants[1]); p.ball(16.5 + st, 40, 3.2, 1.8, P.wood); }
+    else { p.rect(9, 29, 4, 10 - lf, c.pants[1]); p.rect(15, 29, 4, 10 - rf, c.pants[1]); p.rect(9, 29, 1, 10 - lf, c.pants[2]); p.ball(11, 40 - lf, 3, 1.8, P.wood); p.ball(17, 40 - rf, 3, 1.8, P.wood); }
+    if (c.dress) p.ball(14, 31, 8, 6, c.shirt);
+    p.ball(14, 24, 7, 6, c.shirt);
+    if (c.vest && !side) { p.rect(8, 20, 3, 9, c.vest); p.rect(17, 20, 3, 9, c.vest); }
+    if (!side) { p.ball(5.5, 25 + rf, 2.2, 4, c.shirt); p.ball(22.5, 25 + lf, 2.2, 4, c.shirt); p.rect(4, 28 + rf, 3, 2, P.skin[2]); p.rect(21, 28 + lf, 3, 2, P.skin[2]); }
+    else { const sw = [0, 2, -2][f]; p.ball(14 + sw, 24, 2.4, 4.5, c.shirt.slice(0, 3)); p.rect(13 + sw, 28, 3, 2, P.skin[2]); }
+    p.ball(side ? 15 : 14, 11, 6.5, 6.5, P.skin.slice(1));
+    if (back) p.ball(14, 10, 7, 7, c.hair);
+    else if (side) { p.ball(12, 8, 6.5, 5, c.hair); p.rect(8, 8, 4, 7, c.hair[1]); }
+    else { p.ball(14, 7, 7.5, 4.5, c.hair); p.rect(7, 7, 2, 7, c.hair[1]); p.rect(19, 7, 2, 7, c.hair[1]); }
+    if (c.long) { if (back) p.rect(8, 10, 12, 10, c.hair[1]); else if (side) p.rect(8, 10, 4, 10, c.hair[1]); else { p.rect(7, 10, 2, 10, c.hair[1]); p.rect(19, 10, 2, 10, c.hair[1]); } }
+    if (!back && !side) { p.rect(11, 11, 2, 2, P.out); p.rect(16, 11, 2, 2, P.out); p.set(14, 14, '#a8505a'); if (c.beard) p.ell(14, 15.5, 4.5, 2.2, c.hair[2]); }
+    if (side) { p.rect(18, 11, 2, 2, P.out); if (c.beard) p.ell(17, 15, 3, 2, c.hair[2]); }
+    if (c.band) p.rect(8, 6, 13, 2, c.band);
+    if (c.hat) { p.ball(14, 5, 6.5, 3.2, c.hat); p.rect(4, 7, 20, 2, c.hat[1]); p.rect(4, 7, 20, 1, c.hat[2]); }
+    return p.outline();
+  }
+  function drawBird(f) { // 0 parado, 1 bicando, 2/3 voando
+    const p = new Pix(14, 12), B = ['#4a4458', '#7a7290', '#a8a0bc', '#d0cadc'], peck = f === 1;
+    if (f < 2) { p.rect(5, 10, 1, 2, P.amber[2]); p.rect(8, 10, 1, 2, P.amber[2]); }
+    p.ball(7, 7, 5, 3.5, B); p.ell(1.5, 6, 2, 1.2, B[1]);
+    const hx = peck ? 11 : 10, hy = peck ? 8 : 4;
+    p.ball(hx, hy, 2.6, 2.4, B.slice(0, 3)); p.set(hx + 1, hy - 1, P.out); p.rect(hx + 2, hy, 2, 1, P.amber[3]); p.set(hx - 1, hy + 2, '#5a8a7a');
+    if (f === 2) p.ell(6, 2.5, 3.5, 2.2, B[2]); else if (f === 3) p.ell(6, 9.5, 3.5, 1.6, B[1]); else p.ell(6, 7, 3, 1.8, B[2]);
+    return p.outline('#241e2e');
+  }
+  function drawRod() {
+    const p = new Pix(22, 40);
+    p.line(4, 38, 18, 3, P.wood[2], 2); p.line(5, 38, 18, 4, P.wood[3]);
+    p.rect(3, 31, 4, 7, P.amber[1]); p.ball(8, 30, 2.2, 2.2, P.steel.slice(1));
+    for (let y = 4; y < 16; y++) p.set(19 + (y > 10 ? 1 : 0), y, '#f6ead0');
+    p.rect(19, 16, 2, 1, P.steel[3]); p.set(20, 17, P.steel[3]);
+    return p.outline();
+  }
+  function drawBobber() { const p = new Pix(7, 9); p.ell(3.5, 3.5, 3, 3, P.red[3]); p.ell(3.5, 6, 3, 2.4, '#f6ead0'); p.rect(3, 0, 1, 2, P.out); return p.outline(); }
+  function drawExclaim() { const p = new Pix(11, 16); p.ball(5.5, 7.5, 5, 7, ['#c8b8a0', '#f6ead0', '#ffffff']); p.rect(5, 3, 2, 7, P.red[3]); p.rect(5, 11, 2, 2, P.red[3]); return p.outline(); }
+  function drawZ() { const p = new Pix(7, 7); p.rect(1, 1, 5, 1, '#f6ead0'); p.line(5, 2, 1, 5, '#f6ead0'); p.rect(1, 5, 5, 1, '#f6ead0'); return p; }
+  function drawBoot() { const p = new Pix(20, 20); p.rect(5, 2, 7, 11, P.wood[1]); p.rect(5, 2, 2, 11, P.wood[2]); p.ball(11, 15, 8, 4, P.wood); p.rect(3, 17, 16, 2, P.wood[0]); p.rect(6, 5, 5, 1, P.amber[2]); p.rect(6, 8, 5, 1, P.amber[2]); p.set(9, 1, '#5aa046'); p.set(10, 0, '#5aa046'); p.set(8, 0, '#9ad468'); return p.outline(); }
+  function drawCoin() { const p = new Pix(16, 16); p.ball(8, 8, 6.5, 6.5, P.amber.slice(1)); p.ell(8, 8, 3.5, 3.5, P.amber[2]); p.ell(8, 8, 1.5, 1.5, P.amber[4]); return p.outline(); }
+  function drawFish(r, lure) {
+    const p = new Pix(32, 20);
+    p.ell(5, 10, 4, 6, r[1]); p.ell(4, 10, 2.5, 4, r[2]); p.ball(17, 10, 11, 6, r); p.ell(17, 4, 5, 2, r[1]); p.ell(17, 16, 4, 1.6, r[1]);
+    for (let x = 12; x < 24; x += 3) p.set(x, 9 + (x % 2), r[3]);
+    p.rect(24, 8, 2, 2, P.out); p.set(24, 8, '#ffffff'); p.rect(26, 12, 2, 1, r[0]);
+    if (lure) { p.line(22, 4, 26, 0, r[0]); p.ell(27, 1.5, 1.6, 1.6, P.amber[4]); }
+    return p.outline();
+  }
+
   // ================= TEXTURAS DE ARQUITETURA =================
   function bricks(r, tall = 6, wide = 12) {
     const W = wide * 2, H = tall * 4, p = new Pix(W, H);
@@ -624,7 +720,7 @@
   const col = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.32, 1.5, 10), std({ map: stoneLight })); col.position.set(FOUNTAIN.x, 1.1, FOUNTAIN.z); col.castShadow = true; scene.add(col);
   const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.3, 0.3, 14), std({ color: '#d8ccb4' })); bowl.position.set(FOUNTAIN.x, 1.85, FOUNTAIN.z); bowl.castShadow = true; scene.add(bowl);
   circles.push({ x: FOUNTAIN.x, z: FOUNTAIN.z, r: 1.95 });
-  interact.push({ x: FOUNTAIN.x, z: FOUNTAIN.z + 2.1, h: 2.6, name: 'Fonte', lines: ['A água é cristalina e reflete o sol da tarde.', 'Dizem que quem joga uma moeda aqui encontra um parceiro fiel.'] });
+  interact.push({ x: FOUNTAIN.x, z: FOUNTAIN.z + 2.1, h: 2.6, name: 'Fonte', lines: ['A água é cristalina e reflete o sol da tarde.', 'Algo dourado brilha lá no fundo... se ao menos você tivesse uma vara de pesca.'], act: () => inv.rod ? startFishing() : say(['A água é cristalina e reflete o sol da tarde.', 'Algo dourado brilha lá no fundo... se ao menos você tivesse uma vara de pesca.'], 'Fonte') });
 
   // ---------- barraca do mercado, barris e caixotes ----------
   const woodTex = planks(P.wood), S = STALL;
@@ -678,9 +774,25 @@
   const tufts = [], talls = [], lav = [], roses = [], bushes = { g: [], o: [] };
   for (let x = GARDEN.x0 + 0.3; x < GARDEN.x1; x += 0.8) for (let z = GARDEN.z0 + 0.3; z < GARDEN.z1; z += 0.65)
     talls.push({ x: x + (rnd() - 0.5) * 0.4, z: z + (rnd() - 0.5) * 0.3, s: 0.85 + rnd() * 0.35 });
-  for (let i = 0; i < 260; i++) { const x = -17.5 + rnd() * 35, z = -15 + rnd() * 26; if (Math.abs(x) > 16.6) tufts.push({ x, z, s: 0.9 }); }
+  for (let i = 0; i < 260; i++) { const x = (rnd() < 0.5 ? -1 : 1) * (18.4 + rnd() * 5), z = -15 + rnd() * 26; tufts.push({ x, z, s: 0.9 }); }
   HOUSES.forEach(h => { const zf = h.z + h.d / 2 + 0.35, doorX = h.x - h.w / 2 + h.o.door / U; for (let x = h.x - h.w / 2 + 0.4; x < h.x + h.w / 2 - 0.3; x += 0.55) { if (Math.abs(x - doorX) < 1.1) continue; (rnd() < 0.5 ? lav : roses).push({ x, z: zf + (rnd() - 0.5) * 0.15 }); } });
-  for (let z = GARDEN.z0; z < GARDEN.z1 + 1; z += 0.9) if (z < 4.6 || z > 6.4) { bushes.g.push({ x: GARDEN.x0 - 0.5, z, s: 0.8 }); circles.push({ x: GARDEN.x0 - 0.5, z, r: 0.45 }); }
+  // muretas de pedra separando o mato da vila (com portão no jardim)
+  function lowWall(x0, z0, x1, z1) {
+    const w = Math.max(0.45, Math.abs(x1 - x0)), d = Math.max(0.45, Math.abs(z1 - z0)), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2, y = groundY(cx, cz);
+    box(w, 0.7, d, cx, y + 0.35, cz, stoneTex, 1.5);
+    box(w + 0.14, 0.12, d + 0.14, cx, y + 0.76, cz, stoneLight, 1);
+    solids.push({ x0: cx - w / 2, x1: cx + w / 2, z0: cz - d / 2, z1: cz + d / 2 });
+  }
+  function gatePost(x, z) {
+    const y = groundY(x, z); box(0.6, 1.25, 0.6, x, y + 0.625, z, stoneLight, 1);
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 6), balMat); b.position.set(x, y + 1.45, z); b.castShadow = true; scene.add(b);
+    solids.push({ x0: x - 0.3, x1: x + 0.3, z0: z - 0.3, z1: z + 0.3 });
+  }
+  const gwx = GARDEN.x0 - 0.5;
+  lowWall(gwx, 0.4, gwx, 4.25); lowWall(gwx, 6.75, gwx, 11); gatePost(gwx, 4.35); gatePost(gwx, 6.65);
+  lowWall(gwx, 0.4, 17.8, 0.4); lowWall(17.8, 0.4, 17.8, 11); lowWall(17.8, -1.8, 17.8, 0.4);
+  lowWall(-17.8, -1.8, -17.8, 11);
+  lowWall(-17.8, -15, -17.8, -2.5); lowWall(17.8, -15, 17.8, -2.5);
   [[-16, -9], [-16, 0.5], [16.2, -1], [-13, 10], [5, 10.2], [-4.5, 10.3], [12, -13.5], [-9, -13.6]].forEach(([x, z], i) => { (i % 2 ? bushes.o : bushes.g).push({ x, z, s: 1 }); circles.push({ x, z, r: 0.7 }); });
   instanced(drawTuft(true), talls, { amp: 0.14, push: true });
   instanced(drawTuft(false), tufts, { amp: 0.08, push: true });
@@ -689,9 +801,9 @@
   instanced(drawBush(P.leafG), bushes.g.concat(bushes0), { amp: 0.04, shadow: true });
   instanced(drawBush(P.leafO), bushes.o, { amp: 0.04, shadow: true });
 
-  single(drawSign(), GARDEN.x0 - 0.6, 4.2);
-  circles.push({ x: GARDEN.x0 - 0.6, z: 4.2, r: 0.4 });
-  interact.push({ x: GARDEN.x0 - 0.6, z: 4.4, h: 1.9, name: 'Placa', lines: ['Jardim Selvagem', 'Cuidado: monstros se escondem no mato alto!'] });
+  single(drawSign(), GARDEN.x0 - 1.2, 3.7);
+  circles.push({ x: GARDEN.x0 - 1.2, z: 3.7, r: 0.4 });
+  interact.push({ x: GARDEN.x0 - 1.2, z: 3.9, h: 1.9, name: 'Placa', lines: ['Jardim Selvagem', 'Cuidado: monstros se escondem no mato alto!'] });
 
   // ---------- moradores ----------
   const npcs = [];
@@ -701,7 +813,194 @@
   }
   addNPC(drawGuard(), 3.1, -3.0, 'Guarda Bento', ['Alto lá! Ah, é você. Bem-vindo a Vila Âmbar.', 'O terraço leva à pousada e à casa do ferreiro.', 'Fique longe do Jardim Selvagem sem um parceiro!']);
   addNPC(drawMerchant(), S.x, S.z - 0.9, 'Dona Rosa', ['Frutas frescas! Maçãs, laranjas e uvas da serra!', 'Quando a loja abrir, venda aqui o que encontrar na jornada.'], S.z + 1.1);
-  addNPC(drawKid(), -2.6, 7.6, 'Tito', ['Você vai ser um domador de monstros?!', 'Eu vi uma criatura de fogo no jardim ontem! Juro!']);
+  addNPC(drawKid(), -2.6, 7.6, 'Tito', ['Esse é o Brasito, meu parceiro! Ele esquenta minhas mãos no inverno.', 'Você vai ser um domador de monstros?! Tem um monte deles no Jardim Selvagem!']);
+
+  // ================= VIDA NA VILA: moradores andando, criaturas, pássaros =================
+  const freeAt = (x, z, m = 0.4) => x > BOUNDS.x0 && x < BOUNDS.x1 && z > BOUNDS.z0 && z < BOUNDS.z1 &&
+    !solids.some(b => x > b.x0 - m && x < b.x1 + m && z > b.z0 - m && z < b.z1 + m) && !circles.some(c => Math.hypot(x - c.x, z - c.z) < c.r + m);
+  const ents = [];
+  function spriteEnt(tex, x, z) {
+    const w = tex.image.width / U, h = tex.image.height / U, mat = spriteMat(tex), dm = depthMat(tex);
+    const m = new THREE.Mesh(spriteGeo(w, h), mat); m.castShadow = true; m.receiveShadow = true; m.customDepthMaterial = dm; m.quaternion.copy(camQ);
+    m.position.set(x, groundY(x, z), z); scene.add(m); return { m, mat, dm, h };
+  }
+  function setTex(e, t) { if (e.mat.map !== t) { e.mat.map = t; e.dm.map = t; } }
+  function pickTarget(e) {
+    for (let i = 0; i < 25; i++) { const x = e.r.x0 + rnd() * (e.r.x1 - e.r.x0), z = e.r.z0 + rnd() * (e.r.z1 - e.r.z0); if (freeAt(x, z, 0.5)) { e.tx = x; e.tz = z; return; } }
+    e.tx = e.x; e.tz = e.z;
+  }
+  function addWalker(cfg, name, lines, x, z, region) {
+    const tex = {}; ['front', 'back', 'side'].forEach(v => tex[v] = [0, 1, 2].map(f => drawVillager(cfg, v, f)));
+    tex.left = tex.side.map(p => p.mirror()); Object.keys(tex).forEach(k => tex[k] = tex[k].map(p => p.tex()));
+    const e = Object.assign(spriteEnt(tex.front[0], x, z), { kind: 'walk', tex, x, z, r: region, speed: 1.25, pause: rnd() * 2, view: 'front', anim: 0, rad: 0.45 });
+    pickTarget(e); ents.push(e);
+    interact.push({ ent: e, x, z, h: 3, name, lines, onTalk: () => { e.pause = 5; e.view = 'front'; } });
+  }
+  function updWalker(e, dt) {
+    let moving = false;
+    if (e.pause > 0) e.pause -= dt;
+    else {
+      const dx = e.tx - e.x, dz = e.tz - e.z, d = Math.hypot(dx, dz);
+      if (d < 0.15) { e.pause = 1.5 + rnd() * 3.5; pickTarget(e); }
+      else {
+        const nx = e.x + dx / d * e.speed * dt, nz = e.z + dz / d * e.speed * dt;
+        if (!freeAt(nx, nz, 0.35) || Math.hypot(nx - player.x, nz - player.z) < 0.9) { e.pause = 0.6; pickTarget(e); }
+        else { e.x = nx; e.z = nz; moving = true; e.view = Math.abs(dx) > Math.abs(dz) * 0.9 ? (dx < 0 ? 'left' : 'side') : (dz > 0 ? 'front' : 'back'); }
+      }
+    }
+    e.anim = moving ? e.anim + dt * 6 : 0;
+    setTex(e, e.tex[e.view][moving ? 1 + (Math.floor(e.anim) % 2) : 0]);
+    e.m.position.set(e.x, groundY(e.x, e.z) + (moving ? Math.abs(Math.sin(e.anim * Math.PI)) * 0.06 : 0), e.z);
+  }
+  function addCreature(drawFn, name, lines, x, z, region, o = {}) {
+    const fr = [0, 1].map(f => drawFn(f)), tex = { R: fr.map(p => p.tex()), L: fr.map(p => p.mirror().tex()) };
+    const e = Object.assign(spriteEnt(tex.R[0], x, z), { kind: 'hop', tex, x, z, r: region, pause: rnd() * 2, hop: 0, hx: 0, hz: 0, face: 'R', anim: rnd() * 6, rad: 0.35, name }, o);
+    pickTarget(e); ents.push(e);
+    if (lines) interact.push({ ent: e, x, z, h: 1.6, name, lines, when: () => e.m.visible });
+    return e;
+  }
+  function updHopper(e, dt, t) {
+    if (e.hidden > 0) { e.hidden -= dt; if (e.hidden <= 0) { e.m.visible = true; pickTarget(e); } return; }
+    let y = 0, sq = Math.sin(t * 3 + e.anim) * 0.03;
+    if (e.pause > 0) e.pause -= dt;
+    else {
+      if (e.hop === 0) {
+        const dx = e.tx - e.x, dz = e.tz - e.z, d = Math.hypot(dx, dz);
+        if (d < 0.25) { e.pause = 0.8 + rnd() * 2.5; pickTarget(e); } else { e.hx = dx / d; e.hz = dz / d; e.face = dx < 0 ? 'L' : 'R'; }
+      }
+      if (e.pause <= 0) {
+        e.hop += dt / 0.38;
+        const nx = e.x + e.hx * dt * 2.2, nz = e.z + e.hz * dt * 2.2;
+        if (freeAt(nx, nz, 0.25) && Math.hypot(nx - player.x, nz - player.z) > 0.7) { e.x = nx; e.z = nz; } else { e.hop = 0; e.pause = 0.5; pickTarget(e); }
+        const k = Math.sin(Math.min(1, e.hop) * Math.PI); y = k * 0.28; sq = -k * 0.08;
+        if (e.hop >= 1) { e.hop = 0; if (rnd() < 0.3) e.pause = 0.3 + rnd(); }
+      }
+    }
+    if (e.wild && !paused && !fishing.state && Math.hypot(e.x - player.x, e.z - player.z) < 0.95) { e.m.visible = false; e.hidden = 10; encounter(e.name); return; }
+    setTex(e, e.tex[e.face][Math.floor(t * 4 + e.anim) % 2]);
+    e.m.position.set(e.x, groundY(e.x, e.z) + y, e.z); e.m.scale.set(1 + sq, 1 - sq, 1);
+  }
+
+  const VC = {
+    joaquim: { hair: ['#6a6a78', '#a0a0ae', '#d0d0da', '#eeeef4'], shirt: P.plaster, vest: '#5a3a2a', pants: ['#3a2e28', '#4f3f34', '#6a5646'], beard: true },
+    lia: { hair: ['#4a2418', '#7a3a22', '#a85a32', '#c87a48'], shirt: ['#8a6a1a', '#c9a42c', '#f2cc4a', '#fbe58a'], dress: true, long: true, band: '#c2343a', pants: [P.skin[1], P.skin[2], P.skin[3]] },
+    caio: { hair: ['#2a1a14', '#4a2e22', '#6a4432', '#8a5a42'], shirt: ['#1e2f5e', '#2f4f86', '#4776ad', '#78a8cf'], pants: ['#2a241e', '#3e342a', '#55483a'], hat: ['#8a6a2a', '#c9a24a', '#e8c86a', '#f6e09a'] },
+  };
+  const PLAZA = { x0: -9, x1: 9.5, z0: 1.8, z1: 10 }, TERR = { x0: -14, x1: 14, z0: -13.8, z1: -3.4 }, WILDR = { x0: GARDEN.x0 + 0.5, x1: GARDEN.x1 - 0.4, z0: GARDEN.z0 + 0.5, z1: GARDEN.z1 - 0.4 };
+  addWalker(VC.lia, 'Lia', ['Meu avô pescava naquela fonte todo fim de tarde.', 'A vara dele ainda está lá, encostada na pedra... pode usar!', 'Ele jurava que uma carpa dourada vive lá no fundo.'], -5, 3, PLAZA);
+  addWalker(VC.caio, 'Caio', ['Os pombos daqui são folgados. Chegue perto e eles voam!', 'Dizem que monstros diferentes aparecem de noite... será?'], 4.5, 9, PLAZA);
+  addWalker(VC.joaquim, 'Seu Joaquim', ['Na minha época, domador de monstros andava a pé até a capital!', 'O Pedrisco ali dorme o dia inteiro. Não acorde ele, hein.'], 0, -5.5, TERR);
+  addCreature(drawBrasito, 'Brasito', ['O Brasito solta uma faísca alegre!', '(Ele é o parceiro do Tito.)'], -4, 8.5, { x0: -6, x1: -1, z0: 6.8, z1: 9.8 });
+  addCreature(drawFolhim, 'Folhim', ['O Folhim balança as folhinhas e dá risada.', '(Ele vive nos canteiros da herbalista.)'], -11.5, 9, { x0: -14.5, x1: -9, z0: 7.9, z1: 10 });
+  addCreature(drawFolhim, 'Folhim', null, 14, 4, WILDR, { wild: true });
+  addCreature(drawBrasito, 'Brasito', null, 15.5, 8, WILDR, { wild: true });
+  addCreature(drawPedrisco, 'Pedrisco', null, 14.5, 7, WILDR, { wild: true });
+  // Pedrisco dormindo no terraço
+  const sleepy = spriteEnt(drawPedrisco(0).tex(), 13.8, -4.6); circles.push({ x: 13.8, z: -4.6, r: 0.7 });
+  interact.push({ x: 13.8, z: -4.6, h: 2.8, name: 'Pedrisco', lines: ['Zzz... o Pedrisco está dormindo pesado.', 'Musgo cresce nas costas dele. Faz tempo que ele não se mexe!'] });
+  const zTex = drawZ().tex();
+  const zzz = [0, 1, 2].map(i => { const m = new THREE.Mesh(new THREE.PlaneGeometry(7 / U, 7 / U), new THREE.MeshBasicMaterial({ map: zTex, transparent: true, depthWrite: false })); m.quaternion.copy(camQ); scene.add(m); return { m, ph: i / 3 }; });
+  // Gotinho espiando de dentro da fonte
+  const goti = Object.assign(spriteEnt(drawGotinho(0).tex(), FOUNTAIN.x + 0.85, FOUNTAIN.z + 0.35), { x: FOUNTAIN.x + 0.85, z: FOUNTAIN.z + 0.35 }); goti.m.castShadow = false;
+  const gotiTex = [drawGotinho(0).tex(), drawGotinho(1).tex()];
+  interact.push({ x: FOUNTAIN.x + 0.85, z: FOUNTAIN.z + 2.1, h: 2.1, name: 'Gotinho', lines: ['Um Gotinho espia da fonte... e mergulha com um "plic"!'], when: () => gotiUp });
+  let gotiUp = false;
+  // pombos
+  const birdPix = [0, 1, 2, 3].map(drawBird), birdTex = { R: birdPix.map(p => p.tex()), L: birdPix.map(p => p.mirror().tex()) };
+  const birds = [];
+  function placeBird(b, far) {
+    for (let i = 0; i < 30; i++) { const x = PLAZA.x0 + rnd() * (PLAZA.x1 - PLAZA.x0), z = PLAZA.z0 + rnd() * (PLAZA.z1 - PLAZA.z0); if (freeAt(x, z, 0.3) && (!far || Math.hypot(x - player.x, z - player.z) > 5)) { b.x = x; b.z = z; break; } }
+    b.y = 0; b.state = 'ground'; b.m.visible = true; b.face = rnd() < 0.5 ? 'L' : 'R';
+  }
+  for (let i = 0; i < 6; i++) { const b = Object.assign(spriteEnt(birdTex.R[0], 0, 0), { ph: rnd() * 6, x: 0, z: 0, y: 0 }); b.m.castShadow = true; placeBird(b, false); birds.push(b); }
+  function updBird(b, dt, t) {
+    if (b.state === 'gone') { b.timer -= dt; if (b.timer <= 0) placeBird(b, true); return; }
+    let f = 0;
+    if (b.state === 'ground') {
+      f = Math.sin(t * 5 + b.ph) > 0.55 ? 1 : 0;
+      if (Math.sin(t * 0.7 + b.ph * 3) > 0.995) b.face = b.face === 'L' ? 'R' : 'L';
+      const d = Math.hypot(b.x - player.x, b.z - player.z);
+      if (d < (input.run ? 3.2 : 2.1)) { b.state = 'fly'; b.vx = Math.sign(b.x - player.x || 1) * (1.5 + rnd() * 1.5); b.vz = -1.5 - rnd() * 1.5; b.vy = 2.6 + rnd(); b.face = b.vx < 0 ? 'L' : 'R'; }
+    } else {
+      b.x += b.vx * dt; b.z += b.vz * dt; b.y += b.vy * dt; b.vy += 0.6 * dt; f = 2 + (Math.floor(t * 14) % 2);
+      if (b.y > 10) { b.state = 'gone'; b.timer = 6 + rnd() * 8; b.m.visible = false; }
+    }
+    setTex(b, birdTex[b.face][f]); b.m.position.set(b.x, groundY(b.x, b.z) + b.y, b.z);
+  }
+
+  // ================= PESCA (vara na fonte + minijogo de tempo) =================
+  const inv = { rod: false, catches: 0, carp: false };
+  const rodSprite = single(drawRod(), 2.15, 6.45);
+  interact.push({ x: 2.15, z: 6.45, h: 3, name: 'Vara de Pesca', when: () => !inv.rod, act: () => {
+    inv.rod = true; rodSprite.visible = false; toast('Obtido: Vara de Pesca Velha');
+    say(['Uma vara de pesca velha, encostada na fonte.', 'Ainda parece firme! Aperte A perto da fonte para pescar.'], 'Vara de Pesca');
+  } });
+  const bobber = single(drawBobber(), 0, 0, { shadow: false }); bobber.visible = false;
+  const bang = single(drawExclaim(), 0, 0, { shadow: false }); bang.visible = false; bang.material.depthTest = false; bang.renderOrder = 11;
+  const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+  const fishLine = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: '#f6ead0' })); fishLine.visible = false; fishLine.frustumCulled = false; scene.add(fishLine);
+  const fishing = { state: null };
+  const CATCHES = [
+    { w: 40, name: 'Gotinho', pix: () => drawGotinho(0), desc: 'Criatura de água. Vive em fontes e adora bolhas. Ele te olha curioso e volta para a água.' },
+    { w: 25, name: 'Lanternix', pix: () => drawFish(['#14204a', '#2a4a8a', '#4a7ac0', '#9ac8f0'], true), desc: 'Peixe que acende a própria isca. Dizem que guia viajantes perdidos.' },
+    { w: 20, name: 'Bota Velha', pix: drawBoot, desc: 'Encharcada e com uma plantinha dentro. Alguém perdeu isso há muito tempo.' },
+    { w: 15, name: 'Moeda Antiga', pix: drawCoin, desc: 'Uma moeda com um sol gravado. Alguém fez um pedido aqui...' },
+  ];
+  const CARP = { name: 'Carpa Âmbar — Lendária!', pix: () => drawFish(['#6a3a10', '#c9701e', '#f2a83a', '#ffe08a']), desc: 'SEGREDO DESCOBERTO! A guardiã dourada da fonte. Pouquíssimos a viram com os próprios olhos.', rare: true };
+  function pickCatch() {
+    if (!inv.carp && (inv.catches >= 4 || rnd() < 0.05)) return CARP;
+    let r = rnd() * 100; for (const c of CATCHES) { r -= c.w; if (r <= 0) return c; } return CATCHES[0];
+  }
+  function startFishing() {
+    const a = Math.atan2(player.z - FOUNTAIN.z, player.x - FOUNTAIN.x) + (rnd() - 0.5) * 0.7, r = 0.7 + rnd() * 0.45;
+    fishing.bx = FOUNTAIN.x + Math.cos(a) * r; fishing.bz = FOUNTAIN.z + Math.sin(a) * r;
+    bobber.visible = true; fishLine.visible = true; fishing.state = 'wait'; fishing.t = 2 + rnd() * 3.5;
+    const dx = fishing.bx - player.x, dz = fishing.bz - player.z;
+    player.view = Math.abs(dx) > Math.abs(dz) ? (dx < 0 ? 'left' : 'side') : (dz > 0 ? 'front' : 'back');
+    toast('Espere a fisgada e aperte A!');
+  }
+  function endFishing(lines) {
+    fishing.state = null; bobber.visible = bang.visible = fishLine.visible = false; $('fish').style.display = 'none';
+    if (lines) say(lines, 'Pesca');
+  }
+  function fishA() {
+    if (fishing.state === 'wait') endFishing(['Você puxou cedo demais... as criaturas se assustaram.']);
+    else if (fishing.state === 'bite') {
+      bang.visible = false; fishing.state = 'bar'; fishing.catch = pickCatch();
+      const rare = !!fishing.catch.rare; fishing.zw = rare ? 0.11 : 0.2 + rnd() * 0.08; fishing.z0 = 0.08 + rnd() * (0.84 - fishing.zw);
+      fishing.cur = 0; fishing.dir = 1; fishing.speed = rare ? 1.7 : 1.05;
+      const zEl = $('fzone'); zEl.style.left = fishing.z0 * 100 + '%'; zEl.style.width = fishing.zw * 100 + '%'; zEl.classList.toggle('rare', rare);
+      $('fish').style.display = 'flex';
+    } else if (fishing.state === 'bar') {
+      const hit = fishing.cur >= fishing.z0 - 0.015 && fishing.cur <= fishing.z0 + fishing.zw + 0.015;
+      if (!hit) return endFishing(['A linha afrouxou e a criatura escapou!']);
+      const c = fishing.catch; inv.catches++; if (c.rare) inv.carp = true; endFishing(null); showCatch(c);
+    }
+  }
+  let catchOpen = false;
+  function showCatch(c) {
+    const pix = c.pix(), cv = $('ccv'); cv.width = pix.w; cv.height = pix.h;
+    const g = cv.getContext('2d'); g.clearRect(0, 0, pix.w, pix.h); g.drawImage(pix.canvas(), 0, 0);
+    $('cname').textContent = c.name; $('cdesc').textContent = c.desc; $('catch').classList.toggle('rare', !!c.rare);
+    $('catch').style.display = 'flex'; catchOpen = true;
+  }
+  function closeCatch() { $('catch').style.display = 'none'; catchOpen = false; toast('Pescados: ' + inv.catches + (inv.carp ? ' · Carpa Âmbar encontrada!' : '')); }
+  function updFishing(dt, t) {
+    if (!fishing.state) return;
+    const bob = fishing.state === 'bite' ? -0.06 + Math.sin(t * 30) * 0.04 : Math.sin(t * 3) * 0.02;
+    bobber.position.set(fishing.bx, 0.5 + bob, fishing.bz);
+    const hx = player.x + (player.view === 'left' ? -0.55 : player.view === 'side' ? 0.55 : 0.4), hy = player.y + 1.5;
+    lineGeo.attributes.position.setXYZ(0, hx, hy, player.z); lineGeo.attributes.position.setXYZ(1, fishing.bx, 0.62 + bob, fishing.bz); lineGeo.attributes.position.needsUpdate = true;
+    if (fishing.state === 'wait') { fishing.t -= dt; if (fishing.t <= 0) { fishing.state = 'bite'; fishing.t = 0.9; bang.visible = true; bang.position.set(fishing.bx, 1.2, fishing.bz); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} } }
+    else if (fishing.state === 'bite') { fishing.t -= dt; if (fishing.t <= 0) endFishing(['Ela escapou... aperte A assim que o "!" aparecer.']); }
+    else if (fishing.state === 'bar') {
+      fishing.cur += fishing.dir * dt * fishing.speed;
+      if (fishing.cur > 1) { fishing.cur = 1; fishing.dir = -1; } if (fishing.cur < 0) { fishing.cur = 0; fishing.dir = 1; }
+      $('fcur').style.left = fishing.cur * 100 + '%';
+    }
+  }
+  let toastT = 0;
+  function toast(s) { const el = $('toast'); el.textContent = s; el.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('on'), 2600); }
 
   // ---------- luz: feixes de sol, poeira, folhas e fumaça ----------
   function shaftTex() {
@@ -766,6 +1065,7 @@
         if (i === 0) player.x = x0; else if (i === 1) player.x = x1; else if (i === 2) player.z = z0; else player.z = z1;
       }
     });
+    ents.forEach(e => { if (!e.m.visible) return; const dx = player.x - e.x, dz = player.z - e.z, d = Math.hypot(dx, dz), m = e.rad + R; if (d < m && d > 1e-4) { player.x = e.x + dx / d * m; player.z = e.z + dz / d * m; } });
     player.x = Math.max(BOUNDS.x0, Math.min(BOUNDS.x1, player.x)); player.z = Math.max(BOUNDS.z0, Math.min(BOUNDS.z1, player.z));
   }
 
@@ -779,8 +1079,15 @@
     let i = 0; typing = { full, timer: setInterval(() => { txtEl.textContent = full.slice(0, ++i); if (i >= full.length) finishTyping(); }, 24) };
   }
   function finishTyping() { if (!typing || typing.done) return; clearInterval(typing.timer); txtEl.textContent = typing.full; typing = { done: true }; moreEl.style.visibility = 'visible'; }
-  function nearest() { let best = null, bd = 1.8; interact.forEach(o => { const d = Math.hypot(o.x - player.x, o.z - player.z); if (d < bd) { bd = d; best = o; } }); return best; }
-  function pressA() { if (paused) { if (typing && !typing.done) finishTyping(); else nextLine(); return; } const o = nearest(); if (o) say(o.lines, o.name); }
+  function nearest() { let best = null, bd = 1.8; interact.forEach(o => { if (o.when && !o.when()) return; const d = Math.hypot(o.x - player.x, o.z - player.z); if (d < bd) { bd = d; best = o; } }); return best; }
+  function pressA() {
+    if (catchOpen) return closeCatch();
+    if (paused) { if (typing && !typing.done) finishTyping(); else nextLine(); return; }
+    if (fishing.state) return fishA();
+    const o = nearest(); if (!o) return;
+    if (o.onTalk) o.onTalk();
+    if (o.act) o.act(); else say(o.lines, o.name);
+  }
 
   // ================= PÓS-PROCESSAMENTO (profundidade de campo pelo depth buffer) =================
   let rt = null;
@@ -844,7 +1151,7 @@
   function frame(now) {
     const dt = Math.min(0.05, (now - last) / 1000); last = now; const t = now / 1000; T.time.value = t;
     let ix = input.x, iz = input.z; const il = Math.hypot(ix, iz);
-    if (paused || il < 0.01) ix = iz = 0; else { ix /= il; iz /= il; }
+    if (paused || fishing.state || catchOpen || il < 0.01) ix = iz = 0; else { ix /= il; iz /= il; }
     const speed = input.run ? 6 : 3.4, k = 1 - Math.exp(-dt * 14);
     player.vx += (ix * speed - player.vx) * k; player.vz += (iz * speed - player.vz) * k;
     const px0 = player.x, pz0 = player.z;
@@ -857,7 +1164,7 @@
       player.anim += dt * (input.run ? 10 : 6.5); player.frame = 1 + (Math.floor(player.anim) % 2);
       player.dustT -= dt;
       if (input.run && player.dustT <= 0) { player.dustT = 0.1; puff(player.x - player.vx * 0.05, player.y + 0.15, player.z + 0.1, { life: 0.5, vy: 0.6, vx: 0, grow: 1.4, size: 0.5, op: 0.5, color: '#e0cba8' }); }
-      if (player.x > GARDEN.x0 && player.z > GARDEN.z0 && player.z < GARDEN.z1) { player.grassAcc += moved; if (player.grassAcc > 1.2) { player.grassAcc = 0; if (rnd() < 0.14) encounter(); } }
+      if (player.x > GARDEN.x0 && player.z > GARDEN.z0 && player.z < GARDEN.z1) { player.grassAcc += moved; if (player.grassAcc > 1.2) { player.grassAcc = 0; if (rnd() < 0.14) encounter(['Folhim', 'Brasito', 'Pedrisco'][(rnd() * 3) | 0]); } }
     } else { player.frame = 0; player.anim = 0; }
     const tex = heroTex[player.view][player.frame]; heroMat.map = tex; heroDepth.map = tex;
     const bounce = moving ? Math.abs(Math.sin(player.anim * Math.PI)) : 0, breathe = moving ? 0 : Math.sin(t * 2.6) * 0.02;
@@ -879,7 +1186,16 @@
       if (p.life <= 0) p.m.visible = false;
     });
 
-    const near = paused ? null : nearest();
+    // vida
+    ents.forEach(e => e.kind === 'walk' ? updWalker(e, dt) : updHopper(e, dt, t));
+    interact.forEach(o => { if (o.ent) { o.x = o.ent.x; o.z = o.ent.z; o.h = o.ent.m.position.y + o.ent.h + 0.35; } });
+    birds.forEach(b => updBird(b, dt, t));
+    sleepy.m.scale.set(1 + Math.sin(t * 1.6) * 0.03, 1 - Math.sin(t * 1.6) * 0.03, 1);
+    zzz.forEach(z => { const k = (t * 0.35 + z.ph) % 1; z.m.position.set(13.8 + 0.3 + k * 0.5 + Math.sin(k * 6) * 0.1, 1.5 + 0.9 + k * 1.2, -4.6); z.m.material.opacity = Math.sin(k * Math.PI); z.m.scale.setScalar(0.7 + k * 0.6); });
+    { const cyc = (t % 11) / 11; gotiUp = cyc > 0.55 && cyc < 0.85; const k = cyc < 0.5 ? 0 : cyc < 0.6 ? (cyc - 0.5) / 0.1 : cyc < 0.8 ? 1 : cyc < 0.9 ? 1 - (cyc - 0.8) / 0.1 : 0;
+      goti.m.position.y = -0.3 + k * 0.75 + Math.sin(t * 4) * 0.03 * k; goti.m.visible = k > 0.01 && !(fishing.state && Math.hypot(fishing.bx - goti.x, fishing.bz - goti.z) < 0.3); setTex(goti, gotiTex[Math.floor(t * 3) % 2]); }
+    updFishing(dt, t);
+    const near = (paused || fishing.state || catchOpen) ? null : nearest();
     bubble.visible = !!near; if (near) bubble.position.set(near.x, near.h + Math.sin(t * 5) * 0.08, near.z);
 
     camT.x += (player.x + player.vx * 0.25 - camT.x) * (1 - Math.exp(-dt * 5));
@@ -893,9 +1209,9 @@
     renderer.setRenderTarget(null); renderer.render(postScene, postCam);
     requestAnimationFrame(frame);
   }
-  function encounter() {
+  function encounter(name) {
     const f = $('flash'); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); paused = true;
-    setTimeout(() => say(['Um monstro selvagem saltou do mato alto!', '(A batalha chega na próxima etapa.)']), 700);
+    setTimeout(() => say(['Um ' + name + ' selvagem saltou do mato alto!', '(A batalha chega na próxima etapa.)']), 700);
   }
 
   // ================= CONTROLES =================
@@ -932,7 +1248,7 @@
   });
   addEventListener('keyup', e => { const k = e.key.toLowerCase(); if (KEYS[k]) { held.delete(k); keyUpdate(); } else if (k === 'x' || k === 'shift') bUp(); });
 
-  window.__mq = { player, heroPix };
+  window.__mq = { player, heroPix, inv, fishing, pressA: () => pressA() }; // ganchos de teste
   setTimeout(() => say(['Bem-vindo a Vila Âmbar!', 'D-pad: andar. B: correr. A: conversar e ler.', 'Suba a escadaria para explorar o terraço.'], ''), 4600);
   requestAnimationFrame(frame);
 })();
