@@ -15,6 +15,8 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 ## Visual
 - Elementos fixos **[usuário]**:
   - cabelo preto, bagunçado, cobrindo as orelhas, com um fio espetado no topo
+  - fio do topo: curvado para o lado, caído, "um fio desajeitado" (decisão do usuário)
+  - vista de frente SEM a ponta do cachecol; a ponta ao vento aparece só no perfil e nas diagonais (decisão 1A do usuário)
   - formato do cabelo: **corte tigela ("balde") desgrenhado, simples, nada espetado, sem ficar redondo demais** (pedido do usuário após a v2)
   - gola alta preta por baixo de um **cachecol grosso tipo gola-tubo** caramelo
   - suéter creme folgado, com cordões no peito, mangas marrons e punhos pretos
@@ -48,7 +50,8 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Silhuetas (fase C) | `concepts/silhouettes/hero_silhouettes_board.png` (v3; histórico em `history/`) — proporções medidas: A ≈2,3 cabeças, B ≈1,8, C ≈2,7 | `hd2d-art-critic` v3: revisar (cabelo em sino, corpos sem mangas bufantes, lanterna de C ilegível, B redonda demais) | pendente |
 | Estudo de cabelo | `concepts/silhouettes/hair_study_board.png` (H1 reta, H2 média, H3 solta, no corpo de A) | autoavaliação: H2 mais equilibrada | pendente — usuário escolhe H1/H2/H3 |
 | Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D v2 = cabelo H2 + corpo C** (escolha do usuário); v1 em `history/` | crítico D v1: revisar (6 itens) → corrigidos na v2; reavaliação pendente | escolha feita pelo usuário; aprovação final pendente |
-| Conceito | — | — | — |
+| Silhueta final D v3 | `concepts/silhouettes/hero_direction_D_board.png` (1A: sem ponta do cachecol na frente; fio caído para o lado; ombros chanfrados; manga balão) | crítico D v2: pronto (≥7) | decisões 1A e fio dadas pelo usuário |
+| Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` — V1 fiel, V2 crepúsculo, V3 leitura máxima | crítico pendente | pendente — usuário escolhe V1/V2/V3 |
 | Model sheet | — | — | — |
 | Sprite 64×64 | — | — | — |
 | Animações | — | — | — |
