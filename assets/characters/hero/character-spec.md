@@ -46,6 +46,7 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Ficha (fase A) | este arquivo | — | pendente |
 | Silhuetas (fase C) | `concepts/silhouettes/hero_silhouettes_board.png` (v3; histórico em `history/`) — proporções medidas: A ≈2,3 cabeças, B ≈1,8, C ≈2,7 | `hd2d-art-critic` v3: revisar (cabelo em sino, corpos sem mangas bufantes, lanterna de C ilegível, B redonda demais) | pendente |
 | Estudo de cabelo | `concepts/silhouettes/hair_study_board.png` (H1 reta, H2 média, H3 solta, no corpo de A) | autoavaliação: H2 mais equilibrada | pendente — usuário escolhe H1/H2/H3 |
+| Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D = cabelo H2 + corpo C** (escolha do usuário), com mangas bufantes, vão de 2 px e lanterna na mão | crítico pendente | escolha feita pelo usuário; aprovação final pendente |
 | Conceito | — | — | — |
 | Model sheet | — | — | — |
 | Sprite 64×64 | — | — | — |
