@@ -27,6 +27,7 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 - Figurino → função **[proposta]**: cachecol e suéter = viagem no frio da estrada; calça rasgada = longa caminhada; bolsa transversal = mantimentos e itens (no jogo, guarda a vara de pesca e futuros itens); botas = estrada.
 - Simbolismo **[proposta]**: tons terrosos e neutros = alguém comum, ainda sem identidade de domador; as cores das criaturas parceiras vão contrastar com ele.
 - O que NUNCA pode mudar entre vistas: cor e volume do cachecol, cabelo preto bagunçado, lado do rasgo na calça (joelho esquerdo), alça do ombro direito ao quadril esquerdo.
+- Decisões de silhueta (D v2) **[proposta]**: lanterna sempre na mão direita; bolsa transversal no quadril esquerdo fica legível só na fase de cor (na silhueta ela se funde com a mão).
 - Atenção técnica: o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado. Decidir se aceita ou se desenhamos as 8 direções. **[em aberto]**
 
 ## Paleta (provisória, já em uso no jogo) **[jogo]**
@@ -46,7 +47,7 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Ficha (fase A) | este arquivo | — | pendente |
 | Silhuetas (fase C) | `concepts/silhouettes/hero_silhouettes_board.png` (v3; histórico em `history/`) — proporções medidas: A ≈2,3 cabeças, B ≈1,8, C ≈2,7 | `hd2d-art-critic` v3: revisar (cabelo em sino, corpos sem mangas bufantes, lanterna de C ilegível, B redonda demais) | pendente |
 | Estudo de cabelo | `concepts/silhouettes/hair_study_board.png` (H1 reta, H2 média, H3 solta, no corpo de A) | autoavaliação: H2 mais equilibrada | pendente — usuário escolhe H1/H2/H3 |
-| Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D = cabelo H2 + corpo C** (escolha do usuário), com mangas bufantes, vão de 2 px e lanterna na mão | crítico pendente | escolha feita pelo usuário; aprovação final pendente |
+| Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D v2 = cabelo H2 + corpo C** (escolha do usuário); v1 em `history/` | crítico D v1: revisar (6 itens) → corrigidos na v2; reavaliação pendente | escolha feita pelo usuário; aprovação final pendente |
 | Conceito | — | — | — |
 | Model sheet | — | — | — |
 | Sprite 64×64 | — | — | — |
