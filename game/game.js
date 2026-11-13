@@ -698,7 +698,7 @@
   }
   townWall(-EAST, -2, -EAST, 11.1, 2); townWall(-EAST, -15.3, -EAST, -2, 3.5); townWall(EAST, -15.3, EAST, -2, 3.5);
   townWall(EAST, -2, EAST, 2.6, 2); townWall(EAST, 7.4, EAST, 11.1, 2);
-  tower(-EAST, 11.1, 0.95, 3.6); tower(EAST, 11.1, 0.95, 3.6); tower(-EAST, -15.3, 0.95, 3.4, TERRACE_H); tower(EAST, -15.3, 0.95, 3.4, TERRACE_H);
+  tower(-EAST, -15.3, 0.95, 3.4, TERRACE_H); tower(EAST, -15.3, 0.95, 3.4, TERRACE_H);
   tower(EAST, 2.6, 0.7, 3.1); tower(EAST, 7.4, 0.7, 3.1); tower(-2.3, -15.3, 0.8, 3.2, TERRACE_H); tower(2.3, -15.3, 0.8, 3.2, TERRACE_H);
   box(1, 0.55, 4.4, EAST, 3.05, 5, stoneLight, 1); // arco do portão leste
   // cerca rústica marcando os campos fora da vila
