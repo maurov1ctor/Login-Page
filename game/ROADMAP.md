@@ -32,3 +32,11 @@ Este arquivo guarda as ideias combinadas que ainda não entraram no jogo.
 4. Ciclo de dia e noite, clima (chuva, folhas).
 5. Salvar progresso.
 6. Novas áreas: Rota 1 / Campos Sussurrantes, floresta, rio.
+
+## Atualização — personagens, controle e mapa
+- Personagens redesenhados à mão (24x32) no estilo chibi de RPG clássico: proporções de cabeça grande,
+  cabelo em mechas, sombreado em 3 tons e contorno colorido. Arquivo: `game/chars.js`.
+- Alavanca analógica no lugar do D-pad (velocidade proporcional ao quanto se empurra).
+- Vila cercada por muralha com torres; Portão Leste aberto → estrada → Rota 1 / Campos Sussurrantes (mato alto, cercas);
+  Portão Norte fechado (Estrada Real) — gancho para o futuro; tronco caído no fim da estrada (Bosque Murmurante).
+- Pendente (pedido do usuário): revisar o contorno externo da vila e as casas.
