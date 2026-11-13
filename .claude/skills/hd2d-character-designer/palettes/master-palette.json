@@ -1,0 +1,30 @@
+{
+  "status": "PROVISÓRIA — extraída das rampas já usadas em game/sprites2.js e game/game.js; aprovar com o usuário antes de tornar obrigatória",
+  "rules": "rampas de 3-5 tons, escuro→claro, com hue shift (sombras frias/arroxeadas, luzes quentes); contornos derivam do tom mais escuro da rampa vizinha",
+  "ramps": {
+    "outline_base": ["#1a1018", "#20141c"],
+    "skin_light": ["#9a5e52", "#c08470", "#e6b090", "#f6d2b4", "#fbe2cc"],
+    "skin_warm": ["#7a4038", "#b8725e", "#e2a585", "#f6cfae"],
+    "hair_black": ["#0e0b14", "#1c1724", "#2e2638", "#5a4e70"],
+    "hair_navy": ["#141a33", "#232c52", "#33407a", "#5a6eb4"],
+    "hair_auburn": ["#5a2418", "#8a4428", "#b4663c", "#e09a62"],
+    "hair_white": ["#5a5a68", "#8a8a98", "#c4c4d0", "#f2f2f8"],
+    "cloth_cream": ["#a8927a", "#d8c6a8", "#f4e8d2"],
+    "cloth_tan": ["#7e5e38", "#b08850", "#d6b07a"],
+    "cloth_olive": ["#3a3828", "#55523b", "#6e6a4c"],
+    "leather_boot": ["#6e5034", "#a8804e", "#d8b07e"],
+    "leather_dark": ["#2b1d18", "#3a2a24", "#4f3426"],
+    "cloth_blue": ["#2f4f86", "#4776ad", "#78a8cf"],
+    "cloth_red": ["#5e1a22", "#9a2a2e", "#c8443a", "#d8483e"],
+    "cloth_yellow": ["#8a6a1a", "#c9a42c", "#f2cc4a", "#fbe58a"],
+    "cloth_green": ["#1e3a1c", "#3e7038", "#6aa058"],
+    "metal_steel": ["#4a4c5a", "#8a8e9c", "#c8ccd6", "#e6eaf0"],
+    "metal_gold": ["#8a4f22", "#c98a2c", "#f2c45a", "#fbe9a0"],
+    "straw": ["#8a6a2a", "#c9a24a", "#f0d488"],
+    "eyes_grey_blue": ["#160e16", "#4a5878", "#9aa8c8"],
+    "eyes_blue": ["#14182c", "#2f6ab0", "#7ac8f8"],
+    "eyes_green": ["#10241a", "#3a7a5a", "#8ad0a0"],
+    "eyes_amber": ["#2a1408", "#a8682a", "#f0b050"],
+    "accents": ["#ee9c98", "#a8564e", "#ffffff"]
+  }
+}
