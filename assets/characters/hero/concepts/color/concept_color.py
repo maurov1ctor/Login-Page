@@ -125,13 +125,13 @@ def details(img, view, pal, eye):
     if view == "S":
         for x0 in (26, 35):          # olhos 2x3: cílio escuro, íris, brilho
             d.rectangle([x0, 16, x0 + 1, 18], fill=H(eye[0])); d.point((x0, 17), fill=H(eye[1])); d.point((x0 + 1, 18), fill=H(eye[1])); d.point((x0, 16), fill=H(eye[2]))
-        d.point((31, 22), fill=H(MOUTH)); d.point((32, 22), fill=H(MOUTH))
+        d.point((31, 21), fill=H(MOUTH)); d.point((32, 21), fill=H(MOUTH))
         d.point((24, 20), fill=H(BLUSH)); d.point((25, 20), fill=H(BLUSH)); d.point((38, 20), fill=H(BLUSH)); d.point((39, 20), fill=H(BLUSH))
-        d.line([(23, 31), (39, 44)], fill=S("strap", 1), width=2)                   # alça: ombro direito → quadril esquerdo
-        d.rectangle([35, 45, 40, 50], fill=S("bag", 0)); d.rectangle([36, 45, 40, 49], fill=S("bag", 2)); d.rectangle([36, 45, 40, 46], fill=S("bag", 3))   # bolsa abaixo do cinto
         d.rectangle([23, 43, 41, 44], fill=S("strap", 0)); d.point((32, 43), fill=S("metal", 3))   # cinto + fivela
-        d.line([(30, 32), (30, 36)], fill=S("sweater", 0)); d.line([(34, 32), (34, 35)], fill=S("sweater", 0))   # cordões
         d.rectangle([35, 50, 37, 51], fill=S("skin", 2)); d.point((35, 50), fill=S("sweater", 3)); d.point((37, 51), fill=S("sweater", 3))  # rasgo joelho esq.
+        d.rectangle([36, 45, 40, 48], fill=S("bag", 0)); d.rectangle([37, 45, 40, 47], fill=S("bag", 2)); d.rectangle([37, 45, 40, 45], fill=S("bag", 3))   # bolsa na lateral da coxa
+        d.line([(23, 31), (38, 45)], fill=S("strap", 1), width=2)                   # alça (por cima do cinto) chegando na bolsa
+        d.line([(30, 32), (30, 36)], fill=S("sweater", 0)); d.line([(34, 32), (34, 35)], fill=S("sweater", 0))   # cordões
         d.rectangle([24, 53, 30, 54], fill=S("pants", 3)); d.rectangle([34, 53, 40, 54], fill=S("pants", 3))   # barra dobrada (2 linhas)
         d.rectangle([21, 62, 31, 63], fill=S("sole", 2)); d.rectangle([33, 62, 43, 63], fill=S("sole", 1))
     else:
