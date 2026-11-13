@@ -301,6 +301,155 @@ function buildSprites2(Pix) {
   };
   function elf(f = 0) { let rows = fit(ELF_S); if (f) rows = liftLeg(rows, 33, f === 1); return render(rows, ELF_PAL); }
 
+  // ======================= MORADORES 32x40 (cabeça por estilo + corpo base) =======================
+  const BODY = {
+    tunicS: [
+      '..........ooAAAAAAAAAAoo........',
+      '........ooAAAAAAAAAAAAAAoo......',
+      '......ooAAAAAAAAAAAAAAAAaaoo....',
+      '....oAAAABBbAAAAAAAAbbpaaaqo....',
+      '....oAAAABBbAAAAAAAAbbpaaaqo....',
+      '....oAAAABBbAAAAAAAAbbpaaaqo....',
+      '....oAAAaBBbAAAAAAAAbbpaaqqo....',
+      '....oAAAaBBbAAAAAAAAbbpaaqqo....',
+      '....oaaaqBBbAAAAAAAAbbpaqqqo....',
+      '....oSSsdBBbAAAAAAAAbbpSsddo....',
+      '....osddoMMMMMMmMMMMMMMosddo....',
+      '.........oAAAAAAAAAAAaaqo.......',
+      '.........oaaaaaaaaaaaaqqo.......',
+      '..........oCCCCcoCCccro.........',
+      '..........oCCCCcoCCccro.........',
+      '..........oCCCccoCccrro.........',
+      '..........oTTTttoTTttuo.........',
+      '..........oTTTttoTTttuo.........',
+      '.........oTTTttuoTTttuuo........',
+      '.........oooooooooooooo.........',
+    ],
+    tunicE: [
+      '............ooAAAAAAoo..........',
+      '..........ooAAAAAAAAaaoo........',
+      '........oBBAAAAAAAAAAbpo........',
+      '........oBBAAoAAAAobbpqo........',
+      '........oBBAAoAAAAobbpqo........',
+      '........oBBAAoAAAaobbpqo........',
+      '........oBBAAoAAAaobbpqo........',
+      '........oBBAAoAAAaobbpqo........',
+      '........oBBAAoSSSdobbpqo........',
+      '........oMMMMMMMMMMMMMMo........',
+      '........oAAAAAAAAAAaaqqo........',
+      '........oaaaaaaaaaaaqqqo........',
+    ],
+    dressSkirtS: [
+      '........oAAAAAAAAAAAAAAaaqo.....',
+      '.......oAAAAAAAAAAAAAAAaaaqo....',
+      '.......oAAAAAAAAAAAAAAaaaaqo....',
+      '......oAAAAAAAAAAAAAAAaaaaqqo...',
+      '......oaaaaaaaaaaaaaaaaaqqqqo...',
+      '......oooooooooooooooooooooo....',
+      '..........oTTtoo.oTTto..........',
+      '..........oTTtuo.oTTtuo.........',
+      '..........ooooo..ooooo..........',
+    ],
+    dressSkirtE: [
+      '........oAAAAAAAAAAAAaaqo.......',
+      '.......oAAAAAAAAAAAAAaaqqo......',
+      '.......oAAAAAAAAAAAAAAaaqqo.....',
+      '......oAAAAAAAAAAAAAAAaaqqqo....',
+      '......oaaaaaaaaaaaaaaaaaqqqo....',
+      '......ooooooooooooooooooooo.....',
+      '..........oTTtooTTto............',
+      '..........oTTtuoTTtuo...........',
+      '..........oooooooooo............',
+    ],
+  };
+  BODY.tunicN = BODY.tunicS.map((r, i) => (i >= 3 && i <= 9) ? r.slice(0, 9) + 'BBBBBBBBBBBbbp' + r.slice(23) : r).map(r => r.replace('m', 'M'));
+  const LEGS_E = HERO_E.slice(32);
+  const HEADS = {
+    long: {
+      S: GIRL_S.slice(0, 20).map((r, i) => i === 5 ? '......oXXXXXXXXXXXXXXXXXXo......' : r),
+      N: ['..............oo................', '...........ooKhhKoo.............', '.........ooKhhhhhhhKoo..........', '........oKhhhHHHhhhhhhKo........', '.......oKhhHHhhhhHHhhhhKo.......',
+        '......oXXXXXXXXXXXXXXXXXXo......', '.....oKhhhhhhhhhhhhhhhhhhKo.....', '.....oKhhhHhhhhhhhhhhHhhhKo.....', '....oKhhhhhhhhhhhhhhhhhhhhKo....', '....oKhhhhhhhhhhhhhhhhhhhhKo....',
+        '...oKhhhhhhhhhhhhhhhhhhhhhhKo...', '...oKhhhhkhhhhhhhhhhhkhhhhhKo...', '...oKhhhkkhhhhhhhhhhkkhhhhhKo...', '...oKhhhkhhhhhhhhhhhhkhhhhhKo...', '...oKhhkkhhhhhhhhhhhhkkhhhkKo...',
+        '...oKhhkhhhhhhhhhhhhhhkhhhkKo...', '...oKhkkhhhhhhhhhhhhhhkkhhkKo...', '...oKhkhhhhhhhhhhhhhhhhkhhkKo...', '...oKkkhhhhhhhhhhhhhhhhkkhkKo...', '...oKkhhhhhhhhhhhhhhhhhhkkKo....'],
+      E: ['..............oo................', '...........ooKhhKoo.............', '.........ooKhhhhhhhKo...........', '........oKhhhHHHhhhhKo..........', '.......oKhhHHhhhhHHhhhKo........',
+        '......oXXXXXXXXXXXXXXXXo........', '.....oKhhhhhhhhhhhhhhhkkKo......', '.....oKhhhhhhhhhhhhhkSkSkKo.....', '....oKhhhhhhhhhhhhhkSSSSSSo.....', '....oKhhhhhhhhhhhhkSSSSSSSSo....',
+        '...oKhhhhhhhhhhhhkSSSSSSSSSo....', '...oKhhhhhhhhhhhkSSSSSSSSSSo....', '...oKhhhhhhhhhhhkSSSSSSSSSSSo...', '...oKhhhhhhhhhhkdSSSSSSSSSSSo...', '...oKhhhhhhhhhhkdSSSSSSeeeSSo...',
+        '...oKhhhhhhhhhhkdSSSSSSeijSSSo..', '...oKhhhhhhhhhhkdSSSSSSSSSnSo...', '...oKhhhhhhhhhhkodSSSSSSSSlSo...', '...oKhhhhhhhhhhko.odsSSSSssoo...', '...oKhhhhhhhhhhko...oodssoo.....'],
+      backHair: ['......oKhhhhhhhhhhhhhhhhkKo.....', '......oKhhhhhhhhhhhhhhhhkKo.....', '......oKhhhkhhhhhhhhkhhhkKo.....', '......oKhhkkhhhhhhhhkkhhkKo.....', '......oKhhkhhhhhhhhhhkhhkKo.....',
+        '......oKhkkhhhhhhhhhhkkhkKo.....', '......oKkkhhhhhhhhhhhhkkkKo.....', '.......oKkkKkkkKKkkkKkkKo......'],
+    },
+    hat: {
+      S: ['................................', '...........oooooooooo...........', '.........ooYYYYYYYyyyoo.........', '........oYYYYYYYYYyyyyyo........', '........oYYYYYYYYyyyyyyo........',
+        '........oXXXXXXXXXXXXXXo........', '.....oooYYYYYYYYYYyyyyyyooo.....', '...ooYYYYYYYYYYYYYyyyyyyyyyoo...', '..oYYYYYYYYYYYYYYyyyyyyyyyyyzo..', '...oozzzzzzzzzzzzzzzzzzzzzzoo...',
+        '.....oKhkhhkhhkhhkhhkhhkhKo.....', '.....oKkSkkSSkkSSSkkSSkkkKo.....', '.....okSSSSSSSSSSSSSSSSSSko.....', '.....oSSSSSSSSSSSSSSSSSSSso.....', '.....oSSSeeeSSSSSSSSeeeSSso.....',
+        '.....oSSSeijSSSSSSSSeijSSso.....', '.....oSnSSSSSSSSSSSSSSSSnso.....', '......odSSSSSSSllSSSSSSSdo......', '.......oodsSSSSSSSSSSSsdoo......', '.........oodssssssssdoo.........'],
+      N: null,
+      E: ['................................', '...........oooooooooo...........', '.........ooYYYYYYYyyyoo.........', '........oYYYYYYYYYyyyyyo........', '........oYYYYYYYYyyyyyyo........',
+        '........oXXXXXXXXXXXXXXo........', '......ooYYYYYYYYYYYyyyyyoo......', '....ooYYYYYYYYYYYYYyyyyyyyoo....', '...oYYYYYYYYYYYYYYYyyyyyyyyyzo..', '....oozzzzzzzzzzzzzzzzzzzzzoo...',
+        '.....oKhhhhhhhhkkSkSkSkSko......', '.....oKhhhhhhhkSSSSSSSSSSSo.....', '.....oKhhhhhhkdSSSSSSSSSSSo.....', '.....oKhhhhhkdSSSSSSSSSSSSSo....', '.....oKkhhhhkdSSSSSSSSeeeSSo....',
+        '.....oKkkhhhkdSSSSSSSSeijSSSo...', '......oKkkkkodSSSSSSSSSSSnSo....', '.......oKKko.odSSSSSSSSSSlSo....', '...........oodsSSSSSSSSsoo......', '.............oodssssssoo........'],
+    },
+    old: {
+      S: ['', '', '', '', '...........oooooooooo...........', '.........ooSSSSSSSSSSoo.........', '........oSSSSSSSSSSSSSSo........', '.......oSSSSSSSSSSSSSSSSo.......', '......oSSSSSSSSSSSSSSSSSSo......',
+        '.....oHhSSSSSSSSSSSSSSSShHo.....', '....oHhhSSSSSSSSSSSSSSSShhHo....', '....oHhhSSSSSSSSSSSSSSSShhho....', '....oHhhSHHHSSSSSSSSHHHSShho....', '....oHhhSSSSSSSSSSSSSSSSShho....',
+        '....ohhkSSSeeeSSSSSSeeeSSkho....', '....ohhkSSSeijSSSSSSeijSSkho....', '....ohkHHHSSSSSSSSSSSSHHHkko....', '.....okHHHHHHHhhHHHHHHHhko......', '.....okHHHHHHHHHHHHHHHHHko......', '......okHHHHHHHHHHHHHHHko.......'],
+      N: ['', '', '', '', '...........oooooooooo...........', '.........ooSSSSSSSSSSoo.........', '........oSSSSSSSSSSSSSSo........', '.......oSSSSSSSSSSSSSSSSo.......', '......oSSSSSSSSSSSSSSSSSSo......',
+        '.....oHhSSSSSSSSSSSSSSSShHo.....', '....oHhhhSSSSSSSSSSSSSShhhHo....', '....oHhhhhhhhhhhhhhhhhhhhhHo....', '....oHhhhhhhhhhhhhhhhhhhhhho....', '....ohhhhhhhhhhhhhhhhhhhhhko....',
+        '....ohhhhhhhhhhhhhhhhhhhhkko....', '....okhhhhhhhhhhhhhhhhhhkkko....', '.....okkhhhhhhhhhhhhhhhkkko.....', '......okkkkkkkkkkkkkkkkkko......', '.......oooodssssssssdoooo.......', '.........oodssssssssdoo.........'],
+      E: ['', '', '', '', '............oooooooo............', '..........ooSSSSSSSSoo..........', '.........oSSSSSSSSSSSSo.........', '........oSSSSSSSSSSSSSSo........', '.......oSSSSSSSSSSSSSSSSo.......',
+        '......oHhSSSSSSSSSSSSSSSo.......', '.....oHhhhSSSSSSSSSSSSSSSo......', '.....oHhhhhSSSSSSSSSSSSSSo......', '.....oHhhhhSSSSSSSHHHSSSSSo.....', '.....ohhhhhdSSSSSSSSSSSSSSo.....',
+        '.....ohhhhkdSSSSSSSSeeeSSSo.....', '.....okhhhkdSSSSSSSSeijSSSSo....', '......okkkkdSSSSSSSHHHHHSSo.....', '.......oooodSSSSHHHHHHHHHo......', '...........odSHHHHHHHHHHo.......', '............oHHHHHHHHHHo........'],
+      beardS: ['.......okHHHHHHHHHHHHHko........', '........okHHHHHHHHHHHko.........', '.........okkHHHHHHHkko..........', '...........oookkkooo............'],
+      beardE: ['.............oHHHHHHHHo.........', '..............okHHHHko..........', '...............oooooo...........'],
+    },
+    helmet: {
+      S: ['...............oo...............', '..............oXXo..............', '.............oXxXXo.............', '..........oooXXXXXxooo..........', '........ooGGGGGGGGGGGGgoo.......',
+        '.......oGGGGGGGGGGGGGgggggo.....', '......oGGGGGGGGGGGGgggggggvo....', '......oGGGGGGGGGGgggggggggvo....', '.....ogggggggggggggggggggvvvo...', '.....ovvvvvvvvvvvvvvvvvvvvvvo...',
+        '.....oGgoooooooooooooooooggvo...', '.....oGgoSSSSSSSSSSSSSSSoggvo...', '.....oGgSSSSSSSSSSSSSSSSSgvo....', '.....oGgSSSSSSSSSSSSSSSSSgvo....', '.....oGgSeeeSSSSSSSSeeeSSgvo....',
+        '.....oGgSeijSSSSSSSSeijSSgvo....', '.....ogvSnSSSSSSSSSSSSSnSvvo....', '......oovdSSSSSSllSSSSSdvoo.....', '........oodsSSSSSSSSSsdoo.......', '..........oodssssssdoo..........'],
+    },
+    kerchief: {
+      S: ['................................', '...........oooooooooo...........', '.........ooXXXXXXXxxxoo.........', '........oXXXWXXXXXXxxxxo........', '.......oXXXXXXXXWXXxxxxxo.......',
+        '......oXXWXXXXXXXXXxxWxxxo......', '......oXXXXXXXXXXXXxxxxxxo......', '.....oxxxxxxxxxxxxxxxxxxxxo.....', '.....oKhhoooooooooooooohhKo.....', '.....oKhhSSSSSSSSSSSSSSShhKo....',
+        '.....oKhSSSSSSSSSSSSSSSSShKo....', '.....oKhSSSSSSSSSSSSSSSSShKo....', '.....oKhSSSSSSSSSSSSSSSSShKo....', '.....oKhSSSSSSSSSSSSSSSSShKo....', '.....oKhSSeeeSSSSSSSeeeSShKo....',
+        '.....oKhSSeijSSSSSSSeijSShKo....', '.....oKhSnSSSSSSSSSSSSSnShKo....', '......oKdSSSSSSllSSSSSSSdKo.....', '.......oodsSSSSSSSSSSSsdoo......', '.........oodssssssssdoo.........'],
+    },
+    cap: {
+      S: ['................................', '................................', '...........oooooooooo...........', '.........ooXXXXXXXxxxoo.........', '........oXXXXXXXXXxxxxxo........',
+        '.......oXXXXXXXXXXxxxxxxo.......', '.......oXXXXXXXXXxxxxxxxxooo....', '......ooxxxxxxxxxxxxxxxxxxxxxo..', '.....oKhhkhhkhhkhhkhhkhoooooo...', '.....oKkSkkSSkkSSkkSSkkKo.......',
+        '.....oSSSSSSSSSSSSSSSSSSo.......', '.....oSSSeeeSSSSSSSeeeSSo.......', '.....oSSSeijSSSSSSSeijSSo.......', '.....oSnSSSSSSSSSSSSSSnSo.......', '......odSSSSSSllSSSSSdo.........',
+        '.......oodsSSSSSSSSsdoo.........', '.........oodssssssdoo...........'],
+    },
+  };
+  HEADS.hat.N = HEADS.hat.S.slice(0, 10).concat(['.....oKhhhhhhhhhhhhhhhhhhKo.....', '.....oKhhhhhhhhhhhhhhhhhhKo.....', '.....oKkhhhhhhhhhhhhhhhhkKo.....', '.....oKkkhhhhhhhhhhhhhhkkKo.....', '.....oKkkkhhhhhhhhhhhhkkkKo.....',
+    '......oKkkkkkkkkkkkkkkkkKo......', '......oKKkkKkkkKKkkkKkkKKo......', '.......ooKoodSSSSSSdooKoo.......', '.........odssssssssssdo.........', '.........oodssssssssdoo.........']);
+  const NPC32 = {
+    lia: { style: 'long', dress: true, pal: { K: '#5a2418', k: '#8a4428', h: '#b4663c', H: '#e09a62', X: '#c2343a', A: '#f2cc4a', a: '#c9a42c', q: '#8a6a1a', B: '#f2cc4a', b: '#c9a42c', p: '#8a6a1a', M: '#7a3a22', m: '#f6e09a', T: '#8a5a3a', t: '#6a4028', u: '#4a2a1a', i: '#3a7a5a', j: '#8ad0a0' } },
+    caio: { style: 'hat', pal: { Y: '#f0d488', y: '#c9a24a', z: '#8a6a2a', X: '#b03a2e', H: '#9a6a48', h: '#6a4430', k: '#4a2e22', K: '#2a1a14', A: '#78a8cf', a: '#4776ad', q: '#2f4f86', B: '#a8744e', b: '#7a5038', p: '#4f3426', C: '#5a4a3a', c: '#3e342a', r: '#2a241e', T: '#6a4a32', t: '#4a3222', u: '#2e1e14', M: '#2b1d18', m: '#c9a24a', i: '#6a4a30', j: '#b08860' } },
+    joaquim: { style: 'old', pal: { H: '#f2f2f8', h: '#c4c4d0', k: '#8a8a98', K: '#5a5a68', S: '#efc6a6', s: '#dca68a', d: '#b47e6a', A: '#e8dcc0', a: '#c8b896', q: '#9a8a6a', B: '#6a4a3a', b: '#4a3228', p: '#2e1e18', C: '#5a5048', c: '#403830', r: '#2a2420', T: '#5a3a28', t: '#3e281c', u: '#28180e', M: '#2b1d18', m: '#c9a24a', i: '#4a5a7a', j: '#8a9ac0' } },
+    guard: { style: 'helmet', pal: { G: '#e6eaf0', g: '#a8adb8', v: '#5a5e6c', X: '#d8483e', x: '#9a2a2e', A: '#c8443a', a: '#9a2a2e', q: '#5e1a22', B: '#c8ccd6', b: '#8a8e9c', p: '#4a4c5a', C: '#4a3a30', c: '#33281f', r: '#201812', T: '#4a3a30', t: '#33281f', u: '#1a120c', M: '#3a2a24', m: '#e8c050', i: '#3a4a6a', j: '#7a8ab0' }, spear: true },
+    rosa: { style: 'kerchief', dress: true, pal: { X: '#d8483e', x: '#9a2a2e', W: '#f6f0e4', H: '#a8704a', h: '#7a4a32', k: '#5a3a26', K: '#3a2418', A: '#f2ece4', a: '#cfc3bb', q: '#8a7a72', B: '#f2ece4', b: '#cfc3bb', p: '#8a7a72', M: '#a8744e', m: '#f2c45a', T: '#6a4a32', t: '#4a3222', u: '#2e1e14', i: '#6a4a3a', j: '#a88060' } },
+    tito: { style: 'cap', kid: true, pal: { X: '#6aa058', x: '#3e7038', H: '#c8884a', h: '#a86a3a', k: '#7a4628', K: '#4a2a18', A: '#f2c45a', a: '#c98a2c', q: '#8a4f22', B: '#4776ad', b: '#2f4f86', p: '#1e2f5e', C: '#4776ad', c: '#2f4f86', r: '#1e2f5e', T: '#7a5038', t: '#4f3426', u: '#2b1d18', M: '#2f4f86', m: '#f2c45a', i: '#6a4a30', j: '#b08860' } },
+  };
+  const NPC_BASE = { o: '#1a1018', S: '#f6d2b4', s: '#e6b090', d: '#c08470', n: '#ee9c98', l: '#a8564e', e: '#160e16', W: '#f6f0e4' };
+  function npc(name, view, f = 0) {
+    const c = NPC32[name], H = HEADS[c.style], head = (H[view] || H.S).filter((r, i) => i < 20);
+    while (head.length < 20) head.push('');
+    let body;
+    if (view === 'E') body = c.dress ? BODY.tunicE.concat(BODY.dressSkirtE) : BODY.tunicE.concat(f === 1 ? HERO_E.slice(32, 33).concat(E_STRIDE) : LEGS_E);
+    else { const t = view === 'N' ? BODY.tunicN : BODY.tunicS; body = c.dress ? t.slice(0, 11).concat(BODY.dressSkirtS) : t; }
+    let rows = fit(head.map(r => r || '').concat(body));
+    if (c.style === 'long') rows = hairBehind(rows, 18, 31, 2, 26);
+    if (c.style === 'long' && view === 'N') rows = rows.map((r, y) => y >= 20 && y < 28 ? [...r].map((ch, x) => H.backHair[y - 20][x] !== '.' ? H.backHair[y - 20][x] : ch).join('') : r);
+    if (c.style === 'long' && view === 'E') rows = hairBehind(rows, 20, 30, 3, 40);
+    if (c.style === 'old' && view !== 'N') { const bd = view === 'E' ? H.beardE : H.beardS; rows = rows.map((r, y) => y >= 20 && y < 20 + bd.length ? [...r].map((ch, x) => bd[y - 20][x] && bd[y - 20][x] !== '.' ? bd[y - 20][x] : ch).join('') : r); }
+    if (view !== 'E' && f) rows = liftLeg(rows, c.dress ? 37 : 33, f === 1);
+    if (c.kid) rows = rows.slice(0, 17).concat(rows.slice(20, 24), rows.slice(26, 31), rows.slice(33));
+    const p = render(rows, Object.assign({}, HERO_PAL, NPC_BASE, c.pal));
+    if (c.spear) { p.rect(27, 3, 1, 36, '#7a5038'); p.rect(28, 3, 1, 36, '#4f3426'); p.rect(27, 0, 2, 4, '#e6eaf0'); p.set(27, 0, '#ffffff'); p.rect(25, 28, 4, 2, '#e6b090'); }
+    return p;
+  }
+
   // ======================= RETRATOS 48x48 =======================
   const PN = 48;
   const quad = (a, c, b, t) => { const u = 1 - t; return [u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]; };
@@ -435,24 +584,104 @@ function buildSprites2(Pix) {
       },
     },
   };
+
+  // ---------- retratos dos moradores ----------
+  const ramp = (R, dx, dy) => { const l = -dx * 0.6 - dy * 0.45; return l > 0.45 ? R[3] : l > 0.05 ? R[2] : l > -0.4 ? R[1] : R[0]; };
+  const clip = (yMax, R) => (dx, dy, x, y) => y <= yMax ? ramp(R, dx, dy) : null;
+  const SHIRT = (p, R, cx = 24) => ellipseFill(p, cx, 56, 24, 14, (dx) => dx < -0.3 ? R[2] : dx < 0.35 ? R[1] : R[0]);
+  Object.assign(PORTRAITS, {
+    lia: {
+      hair: ['#4a1c14', '#7a3a22', '#b4663c', '#eaa472'], K: Object.assign({}, SKIN, { lash: '#2a1410', irisD: '#1e4a34', iris: '#3a7a5a', irisL: '#8ad0a0', pupil: '#10241a', brow: '#7a3a22' }),
+      mass: { rx: 17, ry: 15.5, long: true },
+      draw: PORTRAITS.girl.draw, bang: [8, 10, 22, 4, 21],
+      top(p) { for (let x = 10; x <= 38; x++) { const y = 10.5 + Math.pow((x - 24) / 14, 2) * 5; p.set(x, y, '#c2343a'); p.set(x, y + 1, '#8a2028'); } },
+      clothes(p) { SHIRT(p, ['#c9a42c', '#f2cc4a', '#fbe58a']); ellipseFill(p, 24, 43, 8, 3, () => '#f6f0e4'); },
+    },
+    caio: {
+      hair: ['#2a1a14', '#4a2e22', '#6a4432', '#9a6a48'], K: Object.assign({}, SKIN, { lash: '#1e140e', irisD: '#3a2414', iris: '#6a4a30', irisL: '#b08860', pupil: '#1a0e08', brow: '#4a2e22' }),
+      mass: { rx: 15.5, ry: 13.5 }, noHalo: true, bang: [8, 14, 22, 3, 5],
+      draw(p, R) { clump(p, [13, 18], [11, 32], 3, -2, R); clump(p, [35, 18], [37, 32], 3, 2, R); },
+      top(p) {
+        const Y = ['#8a6a2a', '#c9a24a', '#f0d488', '#fff0b8'];
+        ellipseFill(p, 24, 10, 11.5, 7.5, clip(15, Y));
+        for (let x = 13; x <= 35; x++) { p.set(x, 13, '#b03a2e'); p.set(x, 14, '#7a2420'); }
+        ellipseFill(p, 24, 16, 22, 4.2, (dx, dy) => dy < -0.2 ? Y[2] : dy < 0.4 ? Y[1] : Y[0]);
+        for (let x = 3; x < 46; x += 3) p.set(x, 16 + (x % 2), Y[0]);
+      },
+      clothes(p) { SHIRT(p, ['#2f4f86', '#4776ad', '#78a8cf']); ellipseFill(p, 12, 50, 7, 9, () => '#7a5038'); ellipseFill(p, 36, 50, 7, 9, () => '#4f3426'); },
+    },
+    joaquim: {
+      hair: ['#5a5a68', '#8a8a98', '#c4c4d0', '#f2f2f8'], K: Object.assign({}, SKIN, { S: '#f2cdb0', s: '#e0ad90', d: '#b88068', lash: '#2a2024', irisD: '#2a3448', iris: '#4a5a7a', irisL: '#8a9ac0', pupil: '#121018', brow: '#f2f2f8' }),
+      bald: true, noHalo: true,
+      draw(p, R) { clump(p, [13, 19], [9, 31], 3.5, -2, R); clump(p, [35, 19], [39, 31], 3.5, 2, R); clump(p, [12, 24], [8, 28], 2, -1, R); clump(p, [36, 24], [40, 28], 2, 1, R); },
+      extra(p, K) {
+        const Wt = ['#8a8a98', '#c4c4d0', '#e8e8f0', '#ffffff'];
+        p.rect(12, 21, 8, 2, Wt[2]); p.rect(28, 21, 8, 2, Wt[1]); p.rect(12, 21, 8, 1, Wt[3]);
+        ellipseFill(p, 24, 41, 12, 8.5, (dx, dy) => ramp(Wt, dx, dy));
+        ellipseFill(p, 24, 35.5, 7, 1.8, (dx) => dx < 0 ? Wt[2] : Wt[1]);
+        for (let i = 0; i < 8; i++) p.set(15 + i * 2.3, 44 + (i % 3), Wt[0]);
+      },
+      clothes(p) { SHIRT(p, ['#9a8a6a', '#c8b896', '#e8dcc0']); ellipseFill(p, 11, 50, 7, 9, () => '#6a4a3a'); ellipseFill(p, 37, 50, 7, 9, () => '#4a3228'); },
+    },
+    guard: {
+      hair: ['#3a3c48', '#767a88', '#c8ccd6', '#f4f6fa'], K: Object.assign({}, SKIN, { lash: '#1a1418', irisD: '#22304a', iris: '#3a4a6a', irisL: '#7a8ab0', pupil: '#0e0e16', brow: '#4a3226' }),
+      noHalo: true,
+      top(p, R) {
+        clump(p, [24, 9], [33, -1], 3.5, -3, ['#5e1a22', '#9a2a2e', '#d8483e', '#f2804e']); clump(p, [26, 9], [38, 3], 3, -2, ['#5e1a22', '#9a2a2e', '#d8483e', '#f2804e']);
+        ellipseFill(p, 24, 19, 14.5, 12, clip(21, R));
+        for (let x = 9; x <= 39; x++) { p.set(x, 21, R[1]); p.set(x, 22, R[0]); }
+        [[9, 13], [35, 39]].forEach(([a, b], i) => { for (let y = 22; y < 34; y++) for (let x = a; x <= b; x++) p.set(x, y, x === (i ? b : a) ? R[0] : i ? R[1] : R[2]); });
+        p.rect(23, 11, 2, 10, R[3]);
+      },
+      clothes(p) { SHIRT(p, ['#5e1a22', '#9a2a2e', '#c8443a']); ellipseFill(p, 9, 48, 9, 6, (dx, dy) => ramp(['#4a4c5a', '#8a8e9c', '#c8ccd6', '#eef0f4'], dx, dy)); ellipseFill(p, 39, 48, 9, 6, (dx, dy) => ramp(['#4a4c5a', '#8a8e9c', '#c8ccd6', '#eef0f4'], dx, dy)); },
+    },
+    rosa: {
+      hair: ['#3a2418', '#5a3a26', '#8a5a3a', '#b07a52'], K: Object.assign({}, SKIN, { lash: '#24140e', irisD: '#3a2414', iris: '#6a4a3a', irisL: '#a88060', pupil: '#1a0e08', brow: '#5a3a26' }),
+      mass: { rx: 15.5, ry: 14 }, noHalo: true, bang: [6, 17, 22, 3, 13],
+      draw(p, R) { clump(p, [14, 20], [12, 37], 3, -2, R); clump(p, [34, 20], [36, 37], 3, 2, R); },
+      top(p) {
+        const Rd = ['#5e1a22', '#9a2a2e', '#d8483e', '#f2804e'];
+        ellipseFill(p, 24, 15, 15.5, 10, clip(19, Rd));
+        [[17, 10], [24, 8], [31, 11], [14, 15], [21, 14], [28, 15], [35, 15], [19, 18], [30, 18]].forEach(([x, y]) => { p.set(x, y, '#f6f0e4'); p.set(x + 1, y, '#f6f0e4'); });
+        ellipseFill(p, 39, 20, 3, 2.5, (dx) => dx < 0 ? Rd[2] : Rd[1]); ellipseFill(p, 42, 23, 2, 3, () => Rd[1]);
+      },
+      clothes(p) { SHIRT(p, ['#8a7a72', '#cfc3bb', '#f2ece4']); [17, 30].forEach(x => { for (let y = 43; y < 48; y++) p.rect(x, y, 2, 1, '#a8744e'); }); },
+    },
+    tito: {
+      hair: ['#4a2a18', '#7a4628', '#a86a3a', '#d8a060'], K: Object.assign({}, SKIN, { lash: '#24140e', irisD: '#3a2414', iris: '#6a4a30', irisL: '#c09060', pupil: '#1a0e08', brow: '#7a4628' }),
+      mass: { rx: 14.5, ry: 13 }, noHalo: true, bang: [8, 15, 22.5, 4, 17],
+      draw(p, R) { clump(p, [14, 19], [10, 27], 2.5, -2, R); clump(p, [34, 19], [38, 27], 2.5, 2, R); },
+      top(p) {
+        const Gr = ['#1e3a1c', '#3e7038', '#6aa058', '#a8d890'];
+        ellipseFill(p, 24, 14, 13.5, 8.5, clip(18, Gr));
+        ellipseFill(p, 34, 19, 10, 2.6, (dx, dy) => dy < 0 ? Gr[1] : Gr[0]);
+        p.rect(22, 7, 4, 2, Gr[3]);
+      },
+      extra(p, K) { [[13, 32], [15, 33], [17, 32], [31, 32], [33, 33], [35, 32]].forEach(([x, y]) => p.set(x, y, K.d)); },
+      clothes(p) { SHIRT(p, ['#c98a2c', '#f2c45a', '#fbe08a']); [15, 32].forEach(x => p.rect(x, 41, 3, 7, '#2f4f86')); },
+    },
+  });
   function ear(p, side, K) { // orelha pontuda de elfo
     for (let i = 0; i < 11; i++) { const x = (side < 0 ? 13 : 35) + side * i, top = 26 - i * 0.7, h = Math.max(1, 6.5 - i * 0.55);
       for (let y = top; y < top + h; y++) p.set(x, y, i > 8 ? K.d : y < top + 1.2 ? K.S : y > top + h - 1.6 ? K.d : (i > 2 && i < 7 && y > top + 2) ? K.d : K.s); }
   }
   function portrait(name, expr = 'neutral') {
     const D = PORTRAITS[name], p = new Pix(PN, PN), R = D.hair;
-    hairMass(p, R, D.mass);
+    if (D.mass) hairMass(p, R, D.mass);
     D.clothes(p);
     if (D.ears) { ear(p, -1, D.K); ear(p, 1, D.K); }
+    if (D.bald) ellipseFill(p, 24, 22, 12, 12, (dx, dy) => { const l = -dx * 0.55 - dy * 0.3 + 0.2; return l > 0.05 ? D.K.S : l > -0.3 ? D.K.s : D.K.d; });
     face(p, D.K);
-    D.draw(p, R);
-    halo(p, R);
+    if (D.draw) D.draw(p, R);
+    if (!D.noHalo) halo(p, R);
     features(p, D.K, expr);
-    const [n, y0, y1, spread, seed] = D.bang; bangs(p, R, n, y0, y1, spread, seed);
+    if (D.bang) { const [n, y0, y1, spread, seed] = D.bang; bangs(p, R, n, y0, y1, spread, seed); }
+    if (D.top) D.top(p, R);
+    if (D.extra) D.extra(p, D.K, expr);
     // sombra do cabelo sobre a testa
     for (let y = 14; y < 32; y++) for (let x = 12; x < 37; x++) { const c = p.get(x, y), up = p.get(x, y - 1); if ((c === D.K.S || c === D.K.s) && R.includes(up)) p.set(x, y, D.K.d); }
     return outlinePix(p);
   }
-  return { hero, girl, elf, portrait };
+  return { hero, girl, elf, portrait, npc, NPC32 };
 }
 if (typeof module !== 'undefined') module.exports = buildSprites2;

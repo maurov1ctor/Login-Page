@@ -40,3 +40,9 @@ Este arquivo guarda as ideias combinadas que ainda não entraram no jogo.
 - Vila cercada por muralha com torres; Portão Leste aberto → estrada → Rota 1 / Campos Sussurrantes (mato alto, cercas);
   Portão Norte fechado (Estrada Real) — gancho para o futuro; tronco caído no fim da estrada (Bosque Murmurante).
 - Pendente (pedido do usuário): revisar o contorno externo da vila e as casas.
+
+## Sprites e retratos (direção de arte definida pelas referências do usuário)
+- Sprites 32x40, vista 3/4, chibi; protagonista em 8 direções com caminhada (`game/sprites2.js`).
+- Moradores redesenhados no mesmo padrão (frente/costas/lado para quem anda).
+- Retratos 48x48 à ESQUERDA da caixa de diálogo, com expressões: neutro, feliz, surpreso (tag `[happy]` etc. na fala).
+- Próximos: mais quadros de animação (4 por direção), diagonais para os moradores, retratos em 64x64 com mais tons.

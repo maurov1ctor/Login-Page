@@ -98,11 +98,12 @@
   }
 
   // ================= PERSONAGENS (pixel art à mão — ver chars.js) =================
-  const CH = buildChars(Pix);
-  const drawHero = (view, f) => CH.hero(view, f);
-  const drawGuard = () => CH.npc(NPC_CFG.guard, 'front', 0);
-  const drawMerchant = () => CH.npc(NPC_CFG.rosa, 'front', 0);
-  const drawKid = () => CH.npc(NPC_CFG.tito, 'front', 0);
+  const SP2 = buildSprites2(Pix); // sprites 32x40 (8 direções) e retratos — ver sprites2.js
+  const DIR8 = ['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE'];
+  const dirOf = (dx, dz) => DIR8[(Math.round(Math.atan2(dz, dx) / (Math.PI / 4)) + 8) % 8];
+  const drawGuard = () => SP2.npc('guard', 'S', 0);
+  const drawMerchant = () => SP2.npc('rosa', 'S', 0);
+  const drawKid = () => SP2.npc('tito', 'S', 0);
 
   // ================= VEGETAÇÃO / PROPS (sprites) =================
   function drawTree(r) {
@@ -229,7 +230,7 @@
     for (let x = 5; x < 22; x++) if (hash(x, 3) < 0.6) p.set(x, 4 + ((hash(x, 7) * 2) | 0), CR.leaf[2 + (x % 2)]);
     return p.outline();
   }
-  const drawVillager = (c, view, f) => CH.npc(c, view, f);
+  const drawVillager = (c, view, f) => SP2.npc(c, { front: 'S', back: 'N', side: 'E' }[view], f);
   function drawBird(f) { // 0 parado, 1 bicando, 2/3 voando
     const p = new Pix(14, 12), B = ['#4a4458', '#7a7290', '#a8a0bc', '#d0cadc'], peck = f === 1;
     if (f < 2) { p.rect(5, 10, 1, 2, P.amber[2]); p.rect(8, 10, 1, 2, P.amber[2]); }
@@ -738,9 +739,9 @@
     const m = single(pix, x, z); m.material.color.setScalar(0.8); npcs.push({ m, ph: rnd() * 6 }); circles.push({ x, z, r: 0.55 });
     interact.push({ x, z: iz != null ? iz : z, h: groundY(x, z) + pix.h / U + 0.4, name, lines });
   }
-  addNPC(drawGuard(), 3.6, -13.7, 'Guarda Bento', ['Alto lá! O Portão Norte está fechado.', 'A Estrada Real é perigosa demais para quem anda sozinho.', 'Vá até os Campos Sussurrantes pelo portão leste e consiga um parceiro primeiro!']);
-  addNPC(drawMerchant(), S.x, S.z - 0.9, 'Dona Rosa', ['Frutas frescas! Maçãs, laranjas e uvas da serra!', 'Quando a loja abrir, venda aqui o que encontrar na jornada.'], S.z + 1.1);
-  addNPC(drawKid(), -2.6, 7.6, 'Tito', ['Esse é o Brasito, meu parceiro! Ele esquenta minhas mãos no inverno.', 'Você vai ser um domador?! Passa pelo portão leste, os Campos Sussurrantes estão cheios de monstros!']);
+  addNPC(drawGuard(), 3.6, -13.7, 'Guarda Bento', ['[surprised]Alto lá! O Portão Norte está fechado.', 'A Estrada Real é perigosa demais para quem anda sozinho.', 'Vá até os Campos Sussurrantes pelo portão leste e consiga um parceiro primeiro!']);
+  addNPC(drawMerchant(), S.x, S.z - 0.9, 'Dona Rosa', ['[happy]Frutas frescas! Maçãs, laranjas e uvas da serra!', 'Quando a loja abrir, venda aqui o que encontrar na jornada.'], S.z + 1.1);
+  addNPC(drawKid(), -2.6, 7.6, 'Tito', ['[happy]Esse é o Brasito, meu parceiro! Ele esquenta minhas mãos no inverno.', '[surprised]Você vai ser um domador?! Passa pelo portão leste, os Campos Sussurrantes estão cheios de monstros!']);
 
   // ================= VIDA NA VILA: moradores andando, criaturas, pássaros =================
   const freeAt = (x, z, m = 0.4) => x > BOUNDS.x0 && x < BOUNDS.x1 && z > BOUNDS.z0 && z < BOUNDS.z1 &&
@@ -808,15 +809,15 @@
     e.m.position.set(e.x, groundY(e.x, e.z) + y, e.z); e.m.scale.set(1 + sq, 1 - sq, 1);
   }
 
-  const VC = { lia: NPC_CFG.lia, caio: NPC_CFG.caio, joaquim: NPC_CFG.joaquim };
+  const VC = { lia: 'lia', caio: 'caio', joaquim: 'joaquim' };
   const VC_OLD = {
     joaquim: { hair: ['#6a6a78', '#a0a0ae', '#d0d0da', '#eeeef4'], shirt: P.plaster, vest: '#5a3a2a', pants: ['#3a2e28', '#4f3f34', '#6a5646'], beard: true },
     lia: { hair: ['#4a2418', '#7a3a22', '#a85a32', '#c87a48'], shirt: ['#8a6a1a', '#c9a42c', '#f2cc4a', '#fbe58a'], dress: true, long: true, band: '#c2343a', pants: [P.skin[1], P.skin[2], P.skin[3]] },
     caio: { hair: ['#2a1a14', '#4a2e22', '#6a4432', '#8a5a42'], shirt: ['#1e2f5e', '#2f4f86', '#4776ad', '#78a8cf'], pants: ['#2a241e', '#3e342a', '#55483a'], hat: ['#8a6a2a', '#c9a24a', '#e8c86a', '#f6e09a'] },
   };
   const PLAZA = { x0: -9, x1: 9.5, z0: 1.8, z1: 10 }, TERR = { x0: -14, x1: 14, z0: -13.8, z1: -3.4 }, WILDR = PATCHES;
-  addWalker(VC.lia, 'Lia', ['Meu avô pescava naquela fonte todo fim de tarde.', 'A vara dele ainda está lá, encostada na pedra... pode usar!', 'Ele jurava que uma carpa dourada vive lá no fundo.'], -5, 3, PLAZA);
-  addWalker(VC.caio, 'Caio', ['Os pombos daqui são folgados. Chegue perto e eles voam!', 'Os Campos Sussurrantes ficam depois do portão leste. Dizem que de noite aparecem monstros diferentes...'], 4.5, 9, PLAZA);
+  addWalker(VC.lia, 'Lia', ['Meu avô pescava naquela fonte todo fim de tarde.', '[happy]A vara dele ainda está lá, encostada na pedra... pode usar!', 'Ele jurava que uma carpa dourada vive lá no fundo.'], -5, 3, PLAZA);
+  addWalker(VC.caio, 'Caio', ['[happy]Os pombos daqui são folgados. Chegue perto e eles voam!', 'Os Campos Sussurrantes ficam depois do portão leste. Dizem que de noite aparecem monstros diferentes...'], 4.5, 9, PLAZA);
   addWalker(VC.joaquim, 'Seu Joaquim', ['Na minha época, domador de monstros andava a pé até a capital!', 'O Pedrisco ali dorme o dia inteiro. Não acorde ele, hein.'], 0, -5.5, TERR);
   addCreature(drawBrasito, 'Brasito', ['O Brasito solta uma faísca alegre!', '(Ele é o parceiro do Tito.)'], -4, 8.5, { x0: -6, x1: -1, z0: 6.8, z1: 9.8 });
   addCreature(drawFolhim, 'Folhim', ['O Folhim balança as folhinhas e dá risada.', '(Ele vive nos canteiros da herbalista.)'], -11.5, 9, { x0: -14.5, x1: -9, z0: 7.9, z1: 10 });
@@ -861,7 +862,7 @@
   const rodSprite = single(drawRod(), 2.15, 6.45);
   interact.push({ x: 2.15, z: 6.45, h: 3, name: 'Vara de Pesca', when: () => !inv.rod, act: () => {
     inv.rod = true; rodSprite.visible = false; toast('Obtido: Vara de Pesca Velha');
-    say(['Uma vara de pesca velha, encostada na fonte.', 'Ainda parece firme! Aperte A perto da fonte para pescar.'], 'Vara de Pesca');
+    say(['[surprised]Uma vara de pesca velha, encostada na fonte!', '[happy]Ainda parece firme. Vou tentar pescar aqui! (Aperte A perto da fonte.)'], 'Você');
   } });
   const bobber = single(drawBobber(), 0, 0, { shadow: false }); bobber.visible = false;
   const bang = single(drawExclaim(), 0, 0, { shadow: false }); bang.visible = false; bang.material.depthTest = false; bang.renderOrder = 11;
@@ -884,7 +885,7 @@
     fishing.bx = FOUNTAIN.x + Math.cos(a) * r; fishing.bz = FOUNTAIN.z + Math.sin(a) * r;
     bobber.visible = true; fishLine.visible = true; fishing.state = 'wait'; fishing.t = 2 + rnd() * 3.5;
     const dx = fishing.bx - player.x, dz = fishing.bz - player.z;
-    player.view = Math.abs(dx) > Math.abs(dz) ? (dx < 0 ? 'left' : 'side') : (dz > 0 ? 'front' : 'back');
+    player.view = dirOf(dx, dz);
     toast('Espere a fisgada e aperte A!');
   }
   function endFishing(lines) {
@@ -917,7 +918,7 @@
     if (!fishing.state) return;
     const bob = fishing.state === 'bite' ? -0.06 + Math.sin(t * 30) * 0.04 : Math.sin(t * 3) * 0.02;
     bobber.position.set(fishing.bx, 0.5 + bob, fishing.bz);
-    const hx = player.x + (player.view === 'left' ? -0.55 : player.view === 'side' ? 0.45 : 0.4), hy = player.y + 1.15;
+    const hx = player.x + (player.view.includes('W') ? -0.5 : 0.5), hy = player.y + 1.35;
     lineGeo.attributes.position.setXYZ(0, hx, hy, player.z); lineGeo.attributes.position.setXYZ(1, fishing.bx, 0.62 + bob, fishing.bz); lineGeo.attributes.position.needsUpdate = true;
     if (fishing.state === 'wait') { fishing.t -= dt; if (fishing.t <= 0) { fishing.state = 'bite'; fishing.t = 0.9; bang.visible = true; bang.position.set(fishing.bx, 1.2, fishing.bz); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} } }
     else if (fishing.state === 'bite') { fishing.t -= dt; if (fishing.t <= 0) endFishing(['Ela escapou... aperte A assim que o "!" aparecer.']); }
@@ -973,15 +974,14 @@
 
   // ---------- protagonista ----------
   const heroPix = {};
-  ['front', 'back', 'side'].forEach(v => heroPix[v] = [0, 1, 2].map(f => drawHero(v, f)));
-  heroPix.left = heroPix.side.map(p => p.mirror());
+  DIR8.forEach(d => heroPix[d] = [0, 1, 2].map(f => SP2.hero(d, f)));
   const heroTex = {}; Object.keys(heroPix).forEach(k => heroTex[k] = heroPix[k].map(p => p.tex()));
-  const heroMat = spriteMat(heroTex.back[0]), heroDepth = depthMat(heroTex.back[0]);
-  const hero = new THREE.Mesh(spriteGeo(24 / U, 32 / U), heroMat);
+  const heroMat = spriteMat(heroTex.N[0]), heroDepth = depthMat(heroTex.N[0]);
+  const hero = new THREE.Mesh(spriteGeo(32 / U, 40 / U), heroMat);
   hero.castShadow = true; hero.receiveShadow = true; hero.customDepthMaterial = heroDepth; scene.add(hero); heroMat.color.setScalar(0.78);
   const bubble = single(drawBubble(), 0, 0, { shadow: false }); bubble.visible = false; bubble.renderOrder = 10; bubble.material.depthTest = false;
 
-  const player = { x: 0, y: 0, z: 8.6, vx: 0, vz: 0, view: 'back', frame: 0, anim: 0, dustT: 0, grassAcc: 0 };
+  const player = { x: 0, y: 0, z: 8.6, vx: 0, vz: 0, view: 'N', frame: 0, anim: 0, dustT: 0, grassAcc: 0 };
   const input = { x: 0, z: 0, run: false };
   function collide() {
     const R = 0.36;
@@ -1001,10 +1001,24 @@
   // ---------- diálogo ----------
   const msgBox = $('msg'), txtEl = $('txt'), nameEl = $('name'), moreEl = $('more');
   let paused = false, queue = [], typing = null, after = null;
-  function say(lines, name = '', done = null) { queue = [].concat(lines); nameEl.textContent = name; after = done; paused = true; nextLine(); }
+  const PORTRAIT_OF = { 'Você': 'hero', 'Lia': 'lia', 'Caio': 'caio', 'Seu Joaquim': 'joaquim', 'Guarda Bento': 'guard', 'Dona Rosa': 'rosa', 'Tito': 'tito' };
+  const pcv = $('pcv'), pctx = pcv.getContext('2d'), pCache = {};
+  let speaker = '';
+  function showPortrait(expr) {
+    const key = PORTRAIT_OF[speaker];
+    msgBox.classList.toggle('withp', !!key);
+    if (!key) return;
+    const id = key + ':' + expr;
+    if (!pCache[id]) pCache[id] = SP2.portrait(key, expr).canvas();
+    pctx.clearRect(0, 0, 48, 48); pctx.drawImage(pCache[id], 0, 0);
+  }
+  function say(lines, name = '', done = null) { queue = [].concat(lines); speaker = name; nameEl.textContent = name; after = done; paused = true; nextLine(); }
   function nextLine() {
     if (!queue.length) { msgBox.style.display = 'none'; paused = false; typing = null; const cb = after; after = null; if (cb) cb(); return; }
-    const full = queue.shift(); msgBox.style.display = 'block'; txtEl.textContent = ''; moreEl.style.visibility = 'hidden';
+    let full = queue.shift(), expr = 'neutral';
+    const tag = /^\[(neutral|happy|surprised)\]/.exec(full); if (tag) { expr = tag[1]; full = full.slice(tag[0].length); }
+    showPortrait(expr);
+    msgBox.style.display = 'block'; txtEl.textContent = ''; moreEl.style.visibility = 'hidden';
     let i = 0; typing = { full, timer: setInterval(() => { txtEl.textContent = full.slice(0, ++i); if (i >= full.length) finishTyping(); }, 24) };
   }
   function finishTyping() { if (!typing || typing.done) return; clearInterval(typing.timer); txtEl.textContent = typing.full; typing = { done: true }; moreEl.style.visibility = 'visible'; }
@@ -1088,8 +1102,7 @@
     player.y += (groundY(player.x, player.z) - player.y) * (1 - Math.exp(-dt * 20));
     const moved = Math.hypot(player.x - px0, player.z - pz0), moving = Math.hypot(player.vx, player.vz) > 0.4 && il > 0.01 && !paused;
     if (moving) {
-      if (Math.abs(player.vx) > Math.abs(player.vz) * 0.9) player.view = player.vx < 0 ? 'left' : 'side';
-      else player.view = player.vz > 0 ? 'front' : 'back';
+      player.view = dirOf(player.vx, player.vz);
       player.anim += dt * (input.run ? 10 : 6.5); player.frame = 1 + (Math.floor(player.anim) % 2);
       player.dustT -= dt;
       if (input.run && player.dustT <= 0) { player.dustT = 0.1; puff(player.x - player.vx * 0.05, player.y + 0.15, player.z + 0.1, { life: 0.5, vy: 0.6, vx: 0, grow: 1.4, size: 0.5, op: 0.5, color: '#e0cba8' }); }
