@@ -14,7 +14,8 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 
 ## Visual
 - Elementos fixos **[usuário]**:
-  - cabelo preto, ondulado e bagunçado, cobrindo as orelhas, com um fio espetado no topo
+  - cabelo preto, bagunçado, cobrindo as orelhas, com um fio espetado no topo
+  - formato do cabelo: **corte tigela ("balde") desgrenhado, simples, nada espetado, sem ficar redondo demais** (pedido do usuário após a v2)
   - gola alta preta por baixo de um **cachecol grosso tipo gola-tubo** caramelo
   - suéter creme folgado, com cordões no peito, mangas marrons e punhos pretos
   - alça transversal escura (ombro direito → quadril esquerdo) com bolsa pequena oliva
@@ -43,7 +44,8 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Etapa | Arquivo | Crítica | Aprovado pelo usuário em |
 |---|---|---|---|
 | Ficha (fase A) | este arquivo | — | pendente |
-| Silhuetas (fase C) | `concepts/silhouettes/hero_silhouettes_board.png` (v2; histórico em `history/`) | autoavaliação feita; crítico independente pendente | pendente — usuário escolhe A, B ou C |
+| Silhuetas (fase C) | `concepts/silhouettes/hero_silhouettes_board.png` (v3; histórico em `history/`) — proporções medidas: A ≈2,3 cabeças, B ≈1,8, C ≈2,7 | `hd2d-art-critic` v3: revisar (cabelo em sino, corpos sem mangas bufantes, lanterna de C ilegível, B redonda demais) | pendente |
+| Estudo de cabelo | `concepts/silhouettes/hair_study_board.png` (H1 reta, H2 média, H3 solta, no corpo de A) | autoavaliação: H2 mais equilibrada | pendente — usuário escolhe H1/H2/H3 |
 | Conceito | — | — | — |
 | Model sheet | — | — | — |
 | Sprite 64×64 | — | — | — |
