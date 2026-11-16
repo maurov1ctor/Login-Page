@@ -127,7 +127,7 @@ def diag_SE():
 def diag_NE():
     pl = list(parts.PARTS_N)
     i = next(i for i, it in enumerate(pl) if it[0] == "turtle")
-    pl.insert(i, ("skin", "e", [41, 14, 45, 20]))                     # nesga da bochecha à direita
+    pl.insert(i, ("skin", "p", [(44, 14), (45, 15), (45, 19), (44, 20)]))   # v2.1: lasca de 1-2 px na borda do cabelo                     # nesga da bochecha à direita
     j = next(j for j, it in enumerate(pl) if it[0] == "scarf")
     pl.insert(j + 1, ("scarf", "p", [(21, 27), (13, 29), (10, 34), (16, 32), (22, 31)]))
     return pl, {x: 17 for x in range(40, 46)}
@@ -150,7 +150,7 @@ def turn_3q(plist):
     for it in plist:
         m, k, d = it
         if (arm_side(it, False) or (m == "sleeve" and cx_of(it) >= 32)):
-            back_arm.append(moved(it, -3, 0)); continue
+            back_arm.append(moved(it, -5, 0)); continue   # v2.1: só 3-4 px da manga de trás à mostra
         if m == "sweater" and k == "r" and d[2] - d[0] > 10: it = (m, k, [d[0], d[1], d[2] - 2, d[3]])
         elif m == "sweater" and k == "p" and cx_of(it) > 32: it = moved(it, -2, 0)
         elif m == "scarf" and k == "e": it = (m, k, [d[0] + 1, d[1], d[2] - 1, d[3]])

@@ -37,7 +37,7 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 - Decisões de silhueta (D v2) **[proposta]**: lanterna sempre na mão direita; bolsa transversal no quadril esquerdo fica legível só na fase de cor (na silhueta ela se funde com a mão).
 - Espelho: **(a) aceito** pelo usuário (16/11) — nos perfis a lanterna fica na mão do lado da câmera; W/SW/NW = espelho de E/SE/NE
 - Escala no jogo: 24 px/unidade (o sprite de 58 px fica com ≈2,4 unidades)
-- Atenção técnica (histórico): o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado. Decidir se aceita ou se desenhamos as 8 direções. **[em aberto]**
+- Atenção técnica (histórico): o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado — **resolvido: espelho (a) aceito**
 
 ## Paleta (provisória, já em uso no jogo) **[jogo]**
 | Material | Rampa |
@@ -60,5 +60,5 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Silhueta final D v3 | `concepts/silhouettes/hero_direction_D_board.png` (1A: sem ponta do cachecol na frente; fio caído para o lado; ombros chanfrados; manga balão) | crítico D v2: pronto (≥7) | decisões 1A e fio dadas pelo usuário |
 | Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` (histórico em `color/history/`) | crítico v2: pronto (V1/V3 ≥7) | **escolhida: V1 + brilho de cabelo da V3** (usuário, 16/11) |
 | Model sheet (fase F) | `model_sheets/hero_model_sheet_v2.png` + vistas `hero_ms_*` (v1 revisado pelo crítico) | crítico v2: pronto como referência da fase G | espelho (a) decidido; aguardando aprovação final |
-| Sprite 64×64 | — | — | — |
-| Animações | — | — | — |
+| Sprite 64×64 (fase G) | `sprites/hero_{S,SE,E,NE,N}_{0,1,2}.png` v2.1 (folha `sprites/hero_sheet_v2.png`; v1 em `sprites/history/v1/`); gerador `make_sprites.py`, export `export_hero64.py` → `game/hero64.js` | crítico v1: revisar (4 notas < 7) → v2: pronto (todas ≥7); v2.1 corrige braço de trás e bochecha do NE | pendente |
+| Animações | parado + 2 passos por direção (W/SW/NW espelhados); integrado no jogo a 24 px/unidade | `anim` sem erros; crítico: passada aprovada na v2 | pendente |
