@@ -11,7 +11,8 @@ Este skill coordena o pipeline. Os detalhes ficam nas referências; leia **só**
 - Sem engine: `game/index.html` + `game/game.js` + Three.js r128 (CDN). Personagens são **billboards** (planos virados para a câmera).
 - Hoje **não existe nenhum PNG de personagem**: sprites e retratos são gerados em tempo de execução a partir de grades de letras em `game/sprites2.js`.
 - Escala do mundo: **16 texels = 1 unidade**; câmera calibrada para 1 texel de sprite = 1 pixel interno. Pivô = **centro inferior**. Alfa binário (`alphaTest 0.5`).
-- O padrão novo pedido pelo usuário é **canvas 64×64**. Ele conflita com a escala atual (personagem ficaria ~1,45× maior que hoje). **Não integre sprites 64×64 no jogo sem o usuário escolher uma das opções** descritas em `engine-integration.md`.
+- Padrão de personagem: **canvas 64×64**. Escala resolvida (16/11): câmera a **24 px/unidade** (`U` em game.js); arte antiga em `UL = 16`. Novos sprites usam 24 px/unidade (plano = largura/24 × altura/24).
+- Direções: W, SW e NW são o espelho de E, SE e NE (decisão do usuário, 16/11).
 
 ## Regras inegociáveis
 1. Personagens **originais**. Referências (Octopath, Cult of the Lamb, imagens do usuário) informam princípios, nunca são copiadas.

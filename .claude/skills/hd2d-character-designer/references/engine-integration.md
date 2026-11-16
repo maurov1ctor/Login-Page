@@ -17,7 +17,10 @@
 | Retratos | 48×48 desenhados em canvas, mostrados a **84 px CSS** | `index.html` (`#pf`) |
 | Assets em PNG | **nenhum** para personagens | — |
 
-## Conflito 1 — canvas 64×64 × escala do mundo (decisão do usuário necessária)
+## Conflito 1 — RESOLVIDO em 16/11 (decisão do usuário: "aumente a escala de tudo, e deixe proporcional")
+Implementado em `game/game.js`: a câmera agora usa **U = 24 px por unidade** (tudo 1,5× maior na tela, proporções do mundo inalteradas). A arte antiga continua medida em **UL = 16** (mesmo tamanho no mundo; aparece ampliada 1,5× até ser redesenhada). **Novos assets usam 24 px/unidade**: personagem de 58 px ≈ 2,4 unidades (≈ tamanho atual relativo às portas), nítido 1:1. O chão procedural já é gerado a 24 px/unidade.
+
+### Histórico da decisão (texto original)
 Hoje o herói tem 40 px de altura = 2,5 unidades. Um personagem de 58 px no canvas 64×64 teria **3,6 unidades (≈1,45×)**. As portas das casas têm ≈1,7–2 unidades: o personagem ficaria bem maior que as portas.
 Opções:
 1. **Manter 1 texel = 1 pixel** e aceitar personagens maiores, ajustando a escala das casas/props (mudança de arquitetura do cenário; preserva a nitidez). *Recomendada se o objetivo for personagens mais detalhados e protagonistas da tela.*

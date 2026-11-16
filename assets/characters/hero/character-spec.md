@@ -35,7 +35,9 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 - Fase G: 2-3 mechas da nuca devem passar 1-2 px abaixo da base do cabelo nas costas (recorte visível na silhueta)
 - Paleta final: V1 com o brilho de cabelo da V3 (#4a3e5c) **[usuário]**
 - Decisões de silhueta (D v2) **[proposta]**: lanterna sempre na mão direita; bolsa transversal no quadril esquerdo fica legível só na fase de cor (na silhueta ela se funde com a mão).
-- Atenção técnica: o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado. Decidir se aceita ou se desenhamos as 8 direções. **[em aberto]**
+- Espelho: **(a) aceito** pelo usuário (16/11) — nos perfis a lanterna fica na mão do lado da câmera; W/SW/NW = espelho de E/SE/NE
+- Escala no jogo: 24 px/unidade (o sprite de 58 px fica com ≈2,4 unidades)
+- Atenção técnica (histórico): o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado. Decidir se aceita ou se desenhamos as 8 direções. **[em aberto]**
 
 ## Paleta (provisória, já em uso no jogo) **[jogo]**
 | Material | Rampa |
@@ -57,6 +59,6 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D v2 = cabelo H2 + corpo C** (escolha do usuário); v1 em `history/` | crítico D v1: revisar (6 itens) → corrigidos na v2; reavaliação pendente | escolha feita pelo usuário; aprovação final pendente |
 | Silhueta final D v3 | `concepts/silhouettes/hero_direction_D_board.png` (1A: sem ponta do cachecol na frente; fio caído para o lado; ombros chanfrados; manga balão) | crítico D v2: pronto (≥7) | decisões 1A e fio dadas pelo usuário |
 | Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` (histórico em `color/history/`) | crítico v2: pronto (V1/V3 ≥7) | **escolhida: V1 + brilho de cabelo da V3** (usuário, 16/11) |
-| Model sheet (fase F) | `model_sheets/hero_model_sheet_v2.png` + vistas `hero_ms_*` (v1 revisado pelo crítico) | crítico v2: pronto como referência da fase G | pendente — decisão do espelho W (a/b) |
+| Model sheet (fase F) | `model_sheets/hero_model_sheet_v2.png` + vistas `hero_ms_*` (v1 revisado pelo crítico) | crítico v2: pronto como referência da fase G | espelho (a) decidido; aguardando aprovação final |
 | Sprite 64×64 | — | — | — |
 | Animações | — | — | — |

@@ -38,7 +38,8 @@
     pants: ['#24221c', '#3b3a2e', '#55523f', '#6e6a50'], boot: ['#4a3322', '#8a6545', '#c9a477', '#e8cfa6'],
     strap: '#2a1f1c', neck: '#1a1418', eye: '#34343f', iris: '#8a90a0',
   };
-  const U = 16; // texels por unidade do mundo
+  const U = 24;  // pixels de tela por unidade do mundo (câmera) — escala do jogo aumentada 1,5x (decisão do usuário)
+  const UL = 16; // densidade em que a arte ANTIGA foi desenhada (sprites, fachadas, telhas): mantém o tamanho no mundo
 
   // ================= RNG / ruído =================
   let seed = 11;
@@ -303,7 +304,7 @@
   }
 
   function facade(w, hW, o) {
-    const W = Math.round(w * U), H = Math.round(hW * U), p = new Pix(W, H), em = new Pix(W, H);
+    const W = Math.round(w * UL), H = Math.round(hW * UL), p = new Pix(W, H), em = new Pix(W, H);
     const PL = P.plaster, T = P.timber, SB = 9, G = P.green;
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const n = hash(x * 1.3, y * 2.1); let c = PL[2];
@@ -359,7 +360,7 @@
     return { map: p.tex(), em: em.tex() };
   }
   function gableTex(w, gh) {
-    const W = Math.round(w * U), H = Math.round(gh * U), p = new Pix(W, H), T = P.timber;
+    const W = Math.round(w * UL), H = Math.round(gh * UL), p = new Pix(W, H), T = P.timber;
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) p.set(x, y, hash(x * 1.7, y * 2.3) < 0.1 ? P.plaster[1] : P.plaster[2]);
     const cx = W >> 1;
     p.rect(cx - 1, 0, 3, H, T[1]); p.rect(0, H - 3, W, 3, T[1]); p.rect(0, H - 3, W, 1, T[2]);
@@ -492,7 +493,7 @@
   const tmpM = new THREE.Matrix4(), tmpP = new THREE.Vector3(), tmpS = new THREE.Vector3(), tmpC = new THREE.Color();
   function instanced(pix, list, o = {}) {
     if (!list.length) return null;
-    const tex = pix.tex ? pix.tex() : pix, w = tex.image.width / U, h = tex.image.height / U;
+    const tex = pix.tex ? pix.tex() : pix, w = tex.image.width / UL, h = tex.image.height / UL;
     const mesh = new THREE.InstancedMesh(spriteGeo(w, h), spriteMat(tex, o), list.length);
     list.forEach((it, i) => {
       const s = it.s || 1; tmpP.set(it.x, it.y != null ? it.y : groundY(it.x, it.z), it.z); tmpS.set(s, s, s);
@@ -503,7 +504,7 @@
     mesh.frustumCulled = false; scene.add(mesh); return mesh;
   }
   function single(pix, x, z, o = {}) {
-    const tex = pix.tex ? pix.tex() : pix, w = tex.image.width / U, h = tex.image.height / U;
+    const tex = pix.tex ? pix.tex() : pix, w = tex.image.width / UL, h = tex.image.height / UL;
     const m = new THREE.Mesh(spriteGeo(w, h), spriteMat(tex, o));
     m.position.set(x, o.y != null ? o.y : groundY(x, z), z); m.quaternion.copy(camQ);
     m.castShadow = o.shadow !== false; m.receiveShadow = true; m.customDepthMaterial = depthMat(tex);
@@ -586,7 +587,7 @@
   // ---------- casas em enxaimel com telhado verde ----------
   const roofTex = shingles(P.roof), chimneys = [];
   function makeHouse(h) {
-    const fr = facade(h.w, h.hW, h.o), sd = facade(h.d, h.hW, { upWin: [Math.round(h.d * U / 2)] });
+    const fr = facade(h.w, h.hW, h.o), sd = facade(h.d, h.hW, { upWin: [Math.round(h.d * UL / 2)] });
     const wm = t => std({ map: t.map, emissive: '#ffffff', emissiveMap: t.em, emissiveIntensity: 0.6 });
     const plain = std({ color: P.plaster[2] });
     const walls = new THREE.Mesh(new THREE.BoxGeometry(h.w, h.hW, h.d), [wm(sd), wm(sd), plain, plain, wm(fr), plain]);
@@ -608,7 +609,7 @@
     box(0.7, 1.6, 0.7, h.x + h.w * 0.25, base + h.gh * 0.75 + 0.6, h.z - h.d * 0.15, stoneTex, 1);
     chimneys.push([h.x + h.w * 0.25, base + h.gh * 0.75 + 1.5, h.z - h.d * 0.15]);
     solids.push({ x0: h.x - h.w / 2, x1: h.x + h.w / 2, z0: h.z - h.d / 2, z1: h.z + h.d / 2 });
-    const doorX = h.x - h.w / 2 + h.o.door / U;
+    const doorX = h.x - h.w / 2 + h.o.door / UL;
     interact.push({ x: doorX, z: h.z + h.d / 2 + 0.4, h: groundY(h.x, h.z) + 2.6, name: h.name, lines: h.lines });
   }
   HOUSES.forEach(makeHouse);
@@ -662,7 +663,7 @@
     const capm = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.3, 4), std({ color: P.timber[0] })); capm.position.set(x, y + 3.8, z); capm.rotation.y = Math.PI / 4; scene.add(capm);
     halo(x, y + 3.45, z + 0.05, 2.2, '#ffb45e', 0.08, 0.35);
     const L = new THREE.PointLight('#ffb45e', 0.55, 5, 2); L.position.set(x, y + 3.2, z + 0.3); scene.add(L); lanterns.push(L);
-    single(bannerPix, x + 0.55, z + 0.05, { y: y + 2.95 - 34 / U, amp: 0.1, hang: true });
+    single(bannerPix, x + 0.55, z + 0.05, { y: y + 2.95 - 34 / UL, amp: 0.1, hang: true });
     circles.push({ x, z, r: 0.45 });
   });
 
@@ -682,7 +683,7 @@
 
   const tufts = [], talls = [], lav = [], roses = [], bushes = { g: [], o: [] };
   for (let i = 0; i < 160; i++) { const x = -(18.4 + rnd() * 5), z = -15 + rnd() * 26; tufts.push({ x, z, s: 0.9 }); }
-  HOUSES.forEach(h => { const zf = h.z + h.d / 2 + 0.35, doorX = h.x - h.w / 2 + h.o.door / U; for (let x = h.x - h.w / 2 + 0.4; x < h.x + h.w / 2 - 0.3; x += 0.55) { if (Math.abs(x - doorX) < 1.1) continue; (rnd() < 0.5 ? lav : roses).push({ x, z: zf + (rnd() - 0.5) * 0.15 }); } });
+  HOUSES.forEach(h => { const zf = h.z + h.d / 2 + 0.35, doorX = h.x - h.w / 2 + h.o.door / UL; for (let x = h.x - h.w / 2 + 0.4; x < h.x + h.w / 2 - 0.3; x += 0.55) { if (Math.abs(x - doorX) < 1.1) continue; (rnd() < 0.5 ? lav : roses).push({ x, z: zf + (rnd() - 0.5) * 0.15 }); } });
   // ---------- muralha da vila com torres; portão leste aberto para a estrada ----------
   function townWall(x0, z0, x1, z1, h) {
     const w = Math.max(0.6, Math.abs(x1 - x0)), d = Math.max(0.6, Math.abs(z1 - z0)), cx = (x0 + x1) / 2, cz = (z0 + z1) / 2;
@@ -731,13 +732,13 @@
   });
   interact.push({ x: 0, z: -14.4, h: 4.2, name: 'Portão Norte', lines: ['A Estrada Real começa do outro lado.', 'Os portões estão fechados. Só domadores com um parceiro podem passar.'] });
   const bannerG = drawBanner();
-  [[EAST - 0.5, 3.4], [EAST - 0.5, 6.6]].forEach(([x, z]) => single(bannerG, x, z, { y: 2.8 - 34 / U, amp: 0.1, hang: true }));
+  [[EAST - 0.5, 3.4], [EAST - 0.5, 6.6]].forEach(([x, z]) => single(bannerG, x, z, { y: 2.8 - 34 / UL, amp: 0.1, hang: true }));
 
   // ---------- moradores ----------
   const npcs = [];
   function addNPC(pix, x, z, name, lines, iz) {
     const m = single(pix, x, z); m.material.color.setScalar(0.8); npcs.push({ m, ph: rnd() * 6 }); circles.push({ x, z, r: 0.55 });
-    interact.push({ x, z: iz != null ? iz : z, h: groundY(x, z) + pix.h / U + 0.4, name, lines });
+    interact.push({ x, z: iz != null ? iz : z, h: groundY(x, z) + pix.h / UL + 0.4, name, lines });
   }
   addNPC(drawGuard(), 3.6, -13.7, 'Guarda Bento', ['[surprised]Alto lá! O Portão Norte está fechado.', 'A Estrada Real é perigosa demais para quem anda sozinho.', 'Vá até os Campos Sussurrantes pelo portão leste e consiga um parceiro primeiro!']);
   addNPC(drawMerchant(), S.x, S.z - 0.9, 'Dona Rosa', ['[happy]Frutas frescas! Maçãs, laranjas e uvas da serra!', 'Quando a loja abrir, venda aqui o que encontrar na jornada.'], S.z + 1.1);
@@ -748,7 +749,7 @@
     !solids.some(b => x > b.x0 - m && x < b.x1 + m && z > b.z0 - m && z < b.z1 + m) && !circles.some(c => Math.hypot(x - c.x, z - c.z) < c.r + m);
   const ents = [];
   function spriteEnt(tex, x, z) {
-    const w = tex.image.width / U, h = tex.image.height / U, mat = spriteMat(tex), dm = depthMat(tex);
+    const w = tex.image.width / UL, h = tex.image.height / UL, mat = spriteMat(tex), dm = depthMat(tex);
     mat.color.setScalar(0.8); const m = new THREE.Mesh(spriteGeo(w, h), mat); m.castShadow = true; m.receiveShadow = true; m.customDepthMaterial = dm; m.quaternion.copy(camQ);
     m.position.set(x, groundY(x, z), z); scene.add(m); return { m, mat, dm, h };
   }
@@ -828,7 +829,7 @@
   const sleepy = spriteEnt(drawPedrisco(0).tex(), 13.8, -4.6); circles.push({ x: 13.8, z: -4.6, r: 0.7 });
   interact.push({ x: 13.8, z: -4.6, h: 2.8, name: 'Pedrisco', lines: ['Zzz... o Pedrisco está dormindo pesado.', 'Musgo cresce nas costas dele. Faz tempo que ele não se mexe!'] });
   const zTex = drawZ().tex();
-  const zzz = [0, 1, 2].map(i => { const m = new THREE.Mesh(new THREE.PlaneGeometry(7 / U, 7 / U), new THREE.MeshBasicMaterial({ map: zTex, transparent: true, depthWrite: false })); m.quaternion.copy(camQ); scene.add(m); return { m, ph: i / 3 }; });
+  const zzz = [0, 1, 2].map(i => { const m = new THREE.Mesh(new THREE.PlaneGeometry(7 / UL, 7 / UL), new THREE.MeshBasicMaterial({ map: zTex, transparent: true, depthWrite: false })); m.quaternion.copy(camQ); scene.add(m); return { m, ph: i / 3 }; });
   // Gotinho espiando de dentro da fonte
   const goti = Object.assign(spriteEnt(drawGotinho(0).tex(), FOUNTAIN.x + 0.85, FOUNTAIN.z + 0.35), { x: FOUNTAIN.x + 0.85, z: FOUNTAIN.z + 0.35 }); goti.m.castShadow = false;
   const gotiTex = [drawGotinho(0).tex(), drawGotinho(1).tex()];
@@ -977,7 +978,7 @@
   DIR8.forEach(d => heroPix[d] = [0, 1, 2].map(f => SP2.hero(d, f)));
   const heroTex = {}; Object.keys(heroPix).forEach(k => heroTex[k] = heroPix[k].map(p => p.tex()));
   const heroMat = spriteMat(heroTex.N[0]), heroDepth = depthMat(heroTex.N[0]);
-  const hero = new THREE.Mesh(spriteGeo(32 / U, 40 / U), heroMat);
+  const hero = new THREE.Mesh(spriteGeo(32 / UL, 40 / UL), heroMat);
   hero.castShadow = true; hero.receiveShadow = true; hero.customDepthMaterial = heroDepth; scene.add(hero); heroMat.color.setScalar(0.78);
   const bubble = single(drawBubble(), 0, 0, { shadow: false }); bubble.visible = false; bubble.renderOrder = 10; bubble.material.depthTest = false;
 
