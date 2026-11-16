@@ -50,6 +50,7 @@ PALETTES = {
 # PALETA FINAL (escolha do usuário em 16/11): V1 com o brilho de cabelo da V3 (recomendação do crítico)
 FINAL = dict(PALETTES["V1"][1]); FINAL["hair"] = FINAL["hair"][:3] + ["#4a3e5c"]
 GLASS_OFF = ["#24242c", "#383a44", "#525a68", "#8a96a8"]   # lanterna apagada (dia): vidro escuro com reflexo frio
+HAIR_DOTS = True   # a fase G desliga e desenha mechas com brilho em arco
 EYE = {"V1": ("#140c14", "#4a5878", "#9aa8c8"), "V2": ("#0e0c1a", "#3e5a8a", "#8ab0e0"), "V3": ("#0c080c", "#3a4a6a", "#a8b8d8")}
 BLUSH, MOUTH = "#e88c88", "#9a4a48"
 
@@ -93,7 +94,7 @@ def shade(mat, pid, pal):
                 k = 3 if t < 0.22 else 2 if t < 0.62 else 1
                 right = x + 1 > 63 or pid[y, x + 1] != i; below = y + 1 > 63 or pid[y + 1, x] != i
                 if right or below: k = max(0, min(k, 1) - (1 if (right and below) else 0))
-                if m == "hair" and (x * 7 + y * 3) % 11 == 0 and k > 1: k -= 1   # mechas
+                if m == "hair" and HAIR_DOTS and (x * 7 + y * 3) % 11 == 0 and k > 1: k -= 1   # mechas (só no conceito)
             out[y, x, :3] = R[k]; out[y, x, 3] = 255
     return out
 

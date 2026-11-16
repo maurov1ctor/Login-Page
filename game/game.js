@@ -919,7 +919,7 @@
     if (!fishing.state) return;
     const bob = fishing.state === 'bite' ? -0.06 + Math.sin(t * 30) * 0.04 : Math.sin(t * 3) * 0.02;
     bobber.position.set(fishing.bx, 0.5 + bob, fishing.bz);
-    const hx = player.x + (player.view.includes('W') ? -0.5 : 0.5), hy = player.y + 1.35;
+    const hx = player.x + (player.view.includes('W') ? -1 : 1) * (HERO_NEW ? 0.6 : 0.5), hy = player.y + (HERO_NEW ? 0.95 : 1.35);
     lineGeo.attributes.position.setXYZ(0, hx, hy, player.z); lineGeo.attributes.position.setXYZ(1, fishing.bx, 0.62 + bob, fishing.bz); lineGeo.attributes.position.needsUpdate = true;
     if (fishing.state === 'wait') { fishing.t -= dt; if (fishing.t <= 0) { fishing.state = 'bite'; fishing.t = 0.9; bang.visible = true; bang.position.set(fishing.bx, 1.2, fishing.bz); try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} } }
     else if (fishing.state === 'bite') { fishing.t -= dt; if (fishing.t <= 0) endFishing(['Ela escapou... aperte A assim que o "!" aparecer.']); }
@@ -974,11 +974,20 @@
   }
 
   // ---------- protagonista ----------
+  // Sprites 64x64 desenhados (hero64.js, 24 px/unidade); fallback para os antigos 32x40 se o arquivo faltar.
+  const HERO_NEW = !!window.HERO64, HERO_U = HERO_NEW ? U : UL;
+  const MIRROR = { W: 'E', SW: 'SE', NW: 'NE' };
+  function heroFrame(d, f) {
+    const H = window.HERO64, src = H.frames[MIRROR[d] || d][f], p = new Pix(H.w, H.h);
+    const K = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (let i = 0; i < src.length; i++) if (src[i] !== '.') p.d[i] = H.pal[K.indexOf(src[i])];
+    return MIRROR[d] ? p.mirror() : p;
+  }
   const heroPix = {};
-  DIR8.forEach(d => heroPix[d] = [0, 1, 2].map(f => SP2.hero(d, f)));
+  DIR8.forEach(d => heroPix[d] = [0, 1, 2].map(f => HERO_NEW ? heroFrame(d, f) : SP2.hero(d, f)));
   const heroTex = {}; Object.keys(heroPix).forEach(k => heroTex[k] = heroPix[k].map(p => p.tex()));
   const heroMat = spriteMat(heroTex.N[0]), heroDepth = depthMat(heroTex.N[0]);
-  const hero = new THREE.Mesh(spriteGeo(32 / UL, 40 / UL), heroMat);
+  const hero = new THREE.Mesh(HERO_NEW ? spriteGeo(64 / U, 64 / U) : spriteGeo(32 / UL, 40 / UL), heroMat);
   hero.castShadow = true; hero.receiveShadow = true; hero.customDepthMaterial = heroDepth; scene.add(hero); heroMat.color.setScalar(0.78);
   const bubble = single(drawBubble(), 0, 0, { shadow: false }); bubble.visible = false; bubble.renderOrder = 10; bubble.material.depthTest = false;
 
