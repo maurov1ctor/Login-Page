@@ -129,9 +129,10 @@ def face_S(d, eye, expr):
             d.point((x0, 18), fill=H(eye[0])); d.point((x0 + 1, 17), fill=H(eye[0])); d.point((x0 + 2, 18), fill=H(eye[0]))
         d.point((30, 20), fill=H(MOUTH)); d.point((31, 21), fill=H(MOUTH)); d.point((32, 21), fill=H(MOUTH)); d.point((33, 20), fill=H(MOUTH))
     elif expr == "surprised":
-        for x0 in (26, 35):
-            d.rectangle([x0, 15, x0 + 1, 18], fill=H(eye[0])); d.point((x0 + 1, 17), fill=H(eye[1])); d.point((x0, 16), fill=H(eye[2])); d.point((x0, 15), fill=H(eye[2]))
-        d.rectangle([31, 21, 32, 22], fill=H(MOUTH))
+        for x0 in (26, 35):          # olho arregalado: mais branco, íris de 1 px
+            d.rectangle([x0, 15, x0 + 1, 15], fill=H(eye[0])); d.rectangle([x0, 16, x0 + 1, 17], fill=H("#f6f0ea"))
+            d.point((x0 + 1, 17), fill=H(eye[1])); d.rectangle([x0, 18, x0 + 1, 18], fill=H(eye[0]))
+        d.rectangle([31, 20, 32, 22], fill=H(MOUTH)); d.rectangle([31, 21, 32, 21], fill=H("#4a1e24"))   # boca "o"
     else:
         for x0 in (26, 35):          # olhos 2x3: cílio escuro, íris, brilho
             d.rectangle([x0, 16, x0 + 1, 18], fill=H(eye[0])); d.point((x0, 17), fill=H(eye[1])); d.point((x0 + 1, 18), fill=H(eye[1])); d.point((x0, 16), fill=H(eye[2]))

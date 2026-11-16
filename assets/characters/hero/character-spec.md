@@ -54,6 +54,6 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D v2 = cabelo H2 + corpo C** (escolha do usuário); v1 em `history/` | crítico D v1: revisar (6 itens) → corrigidos na v2; reavaliação pendente | escolha feita pelo usuário; aprovação final pendente |
 | Silhueta final D v3 | `concepts/silhouettes/hero_direction_D_board.png` (1A: sem ponta do cachecol na frente; fio caído para o lado; ombros chanfrados; manga balão) | crítico D v2: pronto (≥7) | decisões 1A e fio dadas pelo usuário |
 | Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` (histórico em `color/history/`) | crítico v2: pronto (V1/V3 ≥7) | **escolhida: V1 + brilho de cabelo da V3** (usuário, 16/11) |
-| Model sheet (fase F) | `model_sheets/hero_model_sheet_v1.png` + vistas `hero_ms_*` | crítico pendente | pendente |
+| Model sheet (fase F) | `model_sheets/hero_model_sheet_v2.png` + vistas `hero_ms_*` (v1 revisado pelo crítico) | crítico v1: revisar (costas, paleta ≤32, espelho) → corrigido na v2 | pendente — decisão do espelho W (a/b) |
 | Sprite 64×64 | — | — | — |
 | Animações | — | — | — |

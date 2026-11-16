@@ -69,11 +69,13 @@ FRINGE_E = {x: (26 if x < 33 else 13 + [1, 2, 0, 1, 3, 1, 0, 2, 1, 0][(x - 33) %
 # alça do ombro direito (direita da tela) ao quadril esquerdo. Sem rasgo (fica na frente do joelho).
 STRAND_N = [(63 - x, y) for x, y in STRAND_S]   # o fio cai para o mesmo lado do personagem (espelhado na tela)
 PARTS_N = [
-    ("hair", "rr", [19, 5, 45, 22, 6]), ("hair", "rr", [19, 7, 38, 20, 5]),
-    ("hair", "r", [19, 20, 23, 25]), ("hair", "r", [26, 21, 29, 24]), ("hair", "r", [33, 21, 36, 23]), ("hair", "r", [40, 20, 44, 24]),
-    ("hair", "p", [(45, 17), (47, 20), (47, 24), (44, 24), (42, 19)]),          # mecha comprida (lado esquerdo do personagem)
+    ("turtle", "r", [22, 20, 42, 25]),                                          # nuca coberta pela gola (sem furos)
+    ("hair", "rr", [23, 5, 45, 20, 5]), ("hair", "rr", [19, 7, 38, 20, 5]),    # degrau espelhado do da frente
+    ("hair", "r", [18, 18, 21, 24]), ("hair", "r", [24, 19, 27, 23]), ("hair", "r", [30, 19, 33, 24]),
+    ("hair", "r", [36, 19, 39, 22]), ("hair", "r", [42, 18, 45, 23]),          # mechas da nuca com cortes de 2 px
+    ("hair", "p", [(19, 16), (16, 18), (17, 20), (19, 20)]),                    # mecha virada p/ fora (lado esq. do personagem)
+    ("hair", "p", [(45, 17), (47, 20), (47, 24), (44, 24), (42, 19)]),          # mecha comprida (lado dir. do personagem)
     ("hair", "px", STRAND_N),
-    ("turtle", "r", [27, 23, 37, 25]),
     ("scarf", "e", [19, 24, 45, 32]),
     ("sweater", "r", [23, 30, 41, 44]),
     ("sweater", "p", [(23, 30), (20, 31), (17, 34), (20, 34)]), ("sweater", "p", [(19, 32), (20, 32), (20, 37), (17, 37), (17, 34)]),

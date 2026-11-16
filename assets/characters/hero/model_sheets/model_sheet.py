@@ -38,9 +38,9 @@ def main():
     for e, im in expr.items():
         im.save(os.path.join(HERE, "hero_ms_expr_%s.png" % e))
 
-    W, H = 1800, 1240
+    W, H = 1800, 1300
     b = Image.new("RGBA", (W, H), BG); d = ImageDraw.Draw(b)
-    d.text((24, 16), "Protagonista — model sheet v1", fill=INK, font=FB(26))
+    d.text((24, 16), "Protagonista — model sheet v2", fill=INK, font=FB(26))
     d.text((24, 50), "Direção D (cabelo H2 + corpo C) · paleta V1 com brilho de cabelo da V3 · canvas 64×64, pés em y=63 · CONCEITO de referência para a fase G", fill=MUTED, font=F(14))
 
     # 1) turnaround de dia
@@ -51,7 +51,8 @@ def main():
         d.rectangle([x - 4, y0 + 26, x + 64 * S + 3, y0 + 30 + 64 * S], fill=PANEL)
         b.alpha_composite(up(v[(key, False)], S), (x, y0 + 28))
         d.text((x, y0 + 34 + 64 * S), lab, fill=MUTED, font=F(13))
-    d.text((24, y0 + 54 + 64 * S), "Atenção: o lado esquerdo é o direito espelhado — a alça e a bolsa trocam de lado no espelho (decisão pendente: aceitar ou desenhar à parte).", fill=(150, 60, 50, 255), font=F(12))
+    d.text((24, y0 + 50 + 64 * S), "Espelho (lado esquerdo = direito espelhado): a lanterna vai para a mão ESQUERDA, a alça sai do ombro esquerdo e o rasgo do joelho fica escondido.", fill=(150, 60, 50, 255), font=F(12))
+    d.text((24, y0 + 66 + 64 * S), "Decisão do usuário: (a) aceitar o espelho (regras valem 'na mão do lado da câmera' nos perfis) ou (b) desenhar W, NW e SW à parte (~3/8 a mais de quadros).", fill=(150, 60, 50, 255), font=F(12))
 
     # 2) noite
     xn = 24 + 4 * (64 * S + 14) + 6
@@ -85,22 +86,26 @@ def main():
         d.text((cx, cy + crop.size[1] + 4), lab, fill=MUTED, font=F(12))
         cx += max(crop.size[0], int(d.textlength(lab, font=F(12)))) + 22; rowh = max(rowh, crop.size[1])
 
-    # 5) paleta
+    # 5) paleta de PRODUÇÃO (≤32 cores) para a fase G — fusões propostas pelo crítico
     y2 = y1 + 70 + 30 * 8
-    d.text((24, y2), "Paleta final (escuro → claro)", fill=INK, font=FB(16))
-    pal = dict(cc.FINAL); pal["glass (noite)"] = pal.pop("glass"); pal["glass (dia)"] = cc.GLASS_OFF
-    names = {"hair": "cabelo", "skin": "pele", "scarf": "cachecol", "sweater": "suéter", "sleeve": "mangas", "cuff": "punho/gola",
-             "pants": "calça", "boot": "botas", "sole": "sola", "metal": "metal", "strap": "alça/cinto", "bag": "bolsa"}
-    for i, (k, ramp) in enumerate(pal.items()):
-        col, row = i % 3, i // 3
-        x, y = 24 + col * 340, y2 + 28 + row * 40
-        d.text((x, y + 6), names.get(k, k), fill=INK, font=F(13))
+    P32 = [("cabelo", cc.FINAL["hair"]), ("pele", cc.FINAL["skin"][1:]), ("caramelo (cachecol, botas, metal)", cc.FINAL["scarf"]),
+           ("creme (suéter + sola + brilho do olho)", cc.FINAL["sweater"]), ("manga", cc.FINAL["sleeve"][1:]),
+           ("oliva (calça + bolsa)", cc.FINAL["pants"]), ("escuro (alça, cinto, gola, punho, contorno)", ["#120e14", "#241c24", "#3e322c"]),
+           ("vidro (troca dia/noite)", ["#c86a20", "#ffd27a", "#fff4c8"]),
+           ("olho + boca + blush", ["#4a5878", "#9a4a48", "#e88c88"])]
+    total = sum(len(r) for _, r in P32)
+    d.text((24, y2), "Paleta de produção da fase G — %d cores (meta ≤ 32)" % total, fill=INK, font=FB(16))
+    for i, (k, ramp) in enumerate(P32):
+        col, row = i % 2, i // 2
+        x, y = 24 + col * 510, y2 + 28 + row * 40
+        d.text((x, y + 4), k, fill=INK, font=F(12))
         for j, h in enumerate(ramp):
-            d.rectangle([x + 100 + j * 58, y, x + 100 + j * 58 + 54, y + 22], fill=cc.H(h) + (255,))
-            d.text((x + 100 + j * 58, y + 24), h, fill=MUTED, font=F(9))
+            d.rectangle([x + 290 + j * 52, y, x + 290 + j * 52 + 48, y + 22], fill=cc.H(h) + (255,))
+            d.text((x + 290 + j * 52, y + 24), h, fill=MUTED, font=F(9))
+    d.text((24, y2 + 28 + 5 * 40 + 4), "Dia/noite: o mesmo sprite, trocando só as 3 cores do vidro (vidro apagado usa tons do metal/escuro).", fill=MUTED, font=F(12))
 
     # 6) regras + escala de jogo
-    xr = 24 + 3 * 340 + 10
+    xr = 24 + 2 * 510 + 30
     d.text((xr, y2), "Regras de identidade", fill=INK, font=FB(16))
     rules = ["Lanterna sempre na mão DIREITA; acesa só à noite.",
              "Alça: ombro direito → quadril esquerdo; bolsa oliva no quadril esquerdo.",
@@ -119,7 +124,7 @@ def main():
         t.alpha_composite(v[("S", night)], (8, 6)); t.alpha_composite(v[("E", night)], (80, 6))
         b.alpha_composite(t, (xr + i * 160, ys + 22))
 
-    out = os.path.join(HERE, "hero_model_sheet_v1.png"); b.save(out); print("model sheet:", out)
+    out = os.path.join(HERE, "hero_model_sheet_v2.png"); b.save(out); print("model sheet:", out)
 
 
 if __name__ == "__main__":
