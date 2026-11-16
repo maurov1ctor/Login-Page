@@ -63,3 +63,26 @@ PARTS_E = [
 # franja: no rosto, o cabelo só cobre acima desta linha (por coluna); no perfil, a parte de trás da cabeça é toda cabelo
 FRINGE_S = {x: 13 + [0, 1, 2, 1, 0, 1, 3, 2, 0, 1, 2, 0, 1, 1, 1, 0, 2, 1, 0][(x - 23) % 19] for x in range(23, 42)}
 FRINGE_E = {x: (26 if x < 33 else 13 + [1, 2, 0, 1, 3, 1, 0, 2, 1, 0][(x - 33) % 10]) for x in range(27, 43)}
+
+# ---------------------------------------------------------------- vista de COSTAS (N) — fase F (model sheet)
+# Lanterna na mão direita = lado DIREITO da tela de costas; bolsa no quadril esquerdo = lado esquerdo da tela;
+# alça do ombro direito (direita da tela) ao quadril esquerdo. Sem rasgo (fica na frente do joelho).
+STRAND_N = [(63 - x, y) for x, y in STRAND_S]   # o fio cai para o mesmo lado do personagem (espelhado na tela)
+PARTS_N = [
+    ("hair", "rr", [19, 5, 45, 22, 6]), ("hair", "rr", [19, 7, 38, 20, 5]),
+    ("hair", "r", [19, 20, 23, 25]), ("hair", "r", [26, 21, 29, 24]), ("hair", "r", [33, 21, 36, 23]), ("hair", "r", [40, 20, 44, 24]),
+    ("hair", "p", [(45, 17), (47, 20), (47, 24), (44, 24), (42, 19)]),          # mecha comprida (lado esquerdo do personagem)
+    ("hair", "px", STRAND_N),
+    ("turtle", "r", [27, 23, 37, 25]),
+    ("scarf", "e", [19, 24, 45, 32]),
+    ("sweater", "r", [23, 30, 41, 44]),
+    ("sweater", "p", [(23, 30), (20, 31), (17, 34), (20, 34)]), ("sweater", "p", [(19, 32), (20, 32), (20, 37), (17, 37), (17, 34)]),
+    ("sweater", "p", [(41, 30), (44, 31), (47, 34), (44, 34)]), ("sweater", "p", [(44, 32), (45, 32), (47, 34), (47, 37), (44, 37)]),
+    ("sleeve", "e", [13, 35, 20, 45]), ("cuff", "r", [14, 45, 19, 46]), ("skin", "r", [15, 47, 18, 49]),
+    ("sleeve", "e", [44, 35, 51, 45]), ("cuff", "r", [45, 45, 50, 46]), ("skin", "r", [46, 47, 49, 49]),
+    ("metal", "r", [46, 50, 47, 51]), ("metal", "r", [45, 52, 48, 52]), ("glass", "r", [44, 53, 49, 56]), ("metal", "r", [44, 57, 49, 57]),
+    ("pants", "p", [(23, 44), (31, 44), (30, 54), (24, 54)]), ("pants", "p", [(33, 44), (41, 44), (40, 54), (34, 54)]),
+    ("skin", "r", [25, 55, 29, 58]), ("skin", "r", [35, 55, 39, 58]),
+    ("boot", "e", [21, 57, 31, 63]), ("boot", "e", [33, 57, 43, 63]), ("boot", "r", [21, 60, 31, 63]), ("boot", "r", [33, 60, 43, 63]),
+]
+FRINGE_N = {}   # de costas não há rosto

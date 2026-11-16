@@ -47,6 +47,9 @@ PALETTES = {
         "bag": ["#34341f", "#54542f", "#747446", "#90905c"],
     }),
 }
+# PALETA FINAL (escolha do usuário em 16/11): V1 com o brilho de cabelo da V3 (recomendação do crítico)
+FINAL = dict(PALETTES["V1"][1]); FINAL["hair"] = FINAL["hair"][:3] + ["#4a3e5c"]
+GLASS_OFF = ["#24242c", "#383a44", "#525a68", "#8a96a8"]   # lanterna apagada (dia): vidro escuro com reflexo frio
 EYE = {"V1": ("#140c14", "#4a5878", "#9aa8c8"), "V2": ("#0e0c1a", "#3e5a8a", "#8ab0e0"), "V3": ("#0c080c", "#3a4a6a", "#a8b8d8")}
 BLUSH, MOUTH = "#e88c88", "#9a4a48"
 
@@ -119,13 +122,35 @@ def outline(out):
     return res
 
 
-def details(img, view, pal, eye):
-    d = ImageDraw.Draw(img)
-    S = lambda m, k: H(pal[m][k])
-    if view == "S":
+def face_S(d, eye, expr):
+    """Olhos 2x3 + boca, nas 3 expressões do model sheet."""
+    if expr == "happy":
+        for x0 in (26, 35):
+            d.point((x0, 18), fill=H(eye[0])); d.point((x0 + 1, 17), fill=H(eye[0])); d.point((x0 + 2, 18), fill=H(eye[0]))
+        d.point((30, 20), fill=H(MOUTH)); d.point((31, 21), fill=H(MOUTH)); d.point((32, 21), fill=H(MOUTH)); d.point((33, 20), fill=H(MOUTH))
+    elif expr == "surprised":
+        for x0 in (26, 35):
+            d.rectangle([x0, 15, x0 + 1, 18], fill=H(eye[0])); d.point((x0 + 1, 17), fill=H(eye[1])); d.point((x0, 16), fill=H(eye[2])); d.point((x0, 15), fill=H(eye[2]))
+        d.rectangle([31, 21, 32, 22], fill=H(MOUTH))
+    else:
         for x0 in (26, 35):          # olhos 2x3: cílio escuro, íris, brilho
             d.rectangle([x0, 16, x0 + 1, 18], fill=H(eye[0])); d.point((x0, 17), fill=H(eye[1])); d.point((x0 + 1, 18), fill=H(eye[1])); d.point((x0, 16), fill=H(eye[2]))
         d.point((31, 21), fill=H(MOUTH)); d.point((32, 21), fill=H(MOUTH))
+
+
+def details(img, view, pal, eye, expr="neutral"):
+    d = ImageDraw.Draw(img)
+    S = lambda m, k: H(pal[m][k])
+    if view == "N":
+        d.rectangle([23, 43, 41, 44], fill=S("strap", 0))
+        d.rectangle([24, 45, 28, 48], fill=S("bag", 0)); d.rectangle([24, 45, 27, 47], fill=S("bag", 2)); d.rectangle([24, 45, 27, 45], fill=S("bag", 3))
+        d.line([(41, 31), (26, 45)], fill=S("strap", 1), width=2)                   # alça: ombro direito (direita da tela) → quadril esquerdo
+        d.line([(32, 32), (32, 42)], fill=S("sweater", 1))                           # costura central das costas
+        d.rectangle([24, 53, 30, 54], fill=S("pants", 3)); d.rectangle([34, 53, 40, 54], fill=S("pants", 3))
+        d.rectangle([21, 62, 31, 63], fill=S("sole", 2)); d.rectangle([33, 62, 43, 63], fill=S("sole", 1))
+        return img
+    if view == "S":
+        face_S(d, eye, expr)
         d.point((24, 20), fill=H(BLUSH)); d.point((25, 20), fill=H(BLUSH)); d.point((38, 20), fill=H(BLUSH)); d.point((39, 20), fill=H(BLUSH))
         d.rectangle([23, 43, 41, 44], fill=S("strap", 0)); d.point((32, 43), fill=S("metal", 3))   # cinto + fivela
         d.rectangle([35, 50, 37, 51], fill=S("skin", 2)); d.point((35, 50), fill=S("sweater", 3)); d.point((37, 51), fill=S("sweater", 3))  # rasgo joelho esq.
@@ -144,14 +169,16 @@ def details(img, view, pal, eye):
     return img
 
 
-def render(view, key):
-    plist = parts.PARTS_S if view == "S" else parts.PARTS_E
-    fringe = parts.FRINGE_S if view == "S" else parts.FRINGE_E
-    pal = dict(PALETTES[key][1]); pal["turtle"] = pal["cuff"]
+def render(view, key, expr="neutral", night=True):
+    plist = getattr(parts, "PARTS_" + view)
+    fringe = getattr(parts, "FRINGE_" + view)
+    pal = dict(FINAL if key == "F" else PALETTES[key][1]); pal["turtle"] = pal["cuff"]
+    if not night:
+        pal["glass"] = GLASS_OFF
     mat, pid = regions(plist, fringe)
     out = separations(shade(mat, pid, pal), mat)
     img = Image.fromarray(out)
-    img = details(img, view, pal, EYE[key])
+    img = details(img, view, pal, EYE["V1" if key == "F" else key], expr)
     return Image.fromarray(outline(np.array(img)))
 
 

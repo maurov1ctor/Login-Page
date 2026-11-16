@@ -29,6 +29,8 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 - Figurino → função **[proposta]**: cachecol e suéter = viagem no frio da estrada; calça rasgada = longa caminhada; bolsa transversal = mantimentos e itens (no jogo, guarda a vara de pesca e futuros itens); botas = estrada.
 - Simbolismo **[proposta]**: tons terrosos e neutros = alguém comum, ainda sem identidade de domador; as cores das criaturas parceiras vão contrastar com ele.
 - O que NUNCA pode mudar entre vistas: cor e volume do cachecol, cabelo preto bagunçado, lado do rasgo na calça (joelho esquerdo), alça do ombro direito ao quadril esquerdo.
+- Lanterna acesa **só à noite**; de dia o vidro fica apagado **[usuário]**
+- Paleta final: V1 com o brilho de cabelo da V3 (#4a3e5c) **[usuário]**
 - Decisões de silhueta (D v2) **[proposta]**: lanterna sempre na mão direita; bolsa transversal no quadril esquerdo fica legível só na fase de cor (na silhueta ela se funde com a mão).
 - Atenção técnica: o jogo espelha E→W; no espelho a alça e o rasgo trocam de lado. Decidir se aceita ou se desenhamos as 8 direções. **[em aberto]**
 
@@ -51,7 +53,7 @@ Referência principal: `references/user-concept-01.jpg` (arte enviada pelo usuá
 | Estudo de cabelo | `concepts/silhouettes/hair_study_board.png` (H1 reta, H2 média, H3 solta, no corpo de A) | autoavaliação: H2 mais equilibrada | pendente — usuário escolhe H1/H2/H3 |
 | Direção escolhida (silhueta) | `concepts/silhouettes/hero_direction_D_board.png` — **D v2 = cabelo H2 + corpo C** (escolha do usuário); v1 em `history/` | crítico D v1: revisar (6 itens) → corrigidos na v2; reavaliação pendente | escolha feita pelo usuário; aprovação final pendente |
 | Silhueta final D v3 | `concepts/silhouettes/hero_direction_D_board.png` (1A: sem ponta do cachecol na frente; fio caído para o lado; ombros chanfrados; manga balão) | crítico D v2: pronto (≥7) | decisões 1A e fio dadas pelo usuário |
-| Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` — V1 fiel, V2 crepúsculo, V3 leitura máxima | crítico pendente | pendente — usuário escolhe V1/V2/V3 |
-| Model sheet | — | — | — |
+| Conceito em cor (fase D) | `concepts/color/hero_color_concepts_board.png` (histórico em `color/history/`) | crítico v2: pronto (V1/V3 ≥7) | **escolhida: V1 + brilho de cabelo da V3** (usuário, 16/11) |
+| Model sheet (fase F) | `model_sheets/hero_model_sheet_v1.png` + vistas `hero_ms_*` | crítico pendente | pendente |
 | Sprite 64×64 | — | — | — |
 | Animações | — | — | — |
