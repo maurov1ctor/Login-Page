@@ -1,0 +1,9 @@
+# Vídeos e imagens ficam só no computador (pesados demais para o git)
+media/**/*.mp4
+media/**/*.mov
+media/**/*.mkv
+media/**/*.webm
+media/**/*.jpg
+media/**/*.png
+media/**/*.wav
+media/**/*.mp3
